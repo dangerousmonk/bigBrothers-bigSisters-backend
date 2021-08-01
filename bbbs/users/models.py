@@ -4,6 +4,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 
+
 class CustomUser(AbstractUser):
     class Role(models.TextChoices):
         ADMIN = 'admin', _('Administrator')
@@ -11,6 +12,11 @@ class CustomUser(AbstractUser):
         MODERATOR = 'moderator', _('Moderator')
         MENTOR = 'mentor', _('Mentor')
         CURATOR = 'curator', _('Curator')
+
+    class Gender(models.TextChoices):
+        MALE = 'M', _('Male')
+        FEMALE = 'F', _('Female')
+
     email = models.EmailField(
         unique=True,
         blank=False,
@@ -29,8 +35,13 @@ class CustomUser(AbstractUser):
         null=False,
         verbose_name=_('last name'),
     )
+    gender = models.CharField(
+        max_length=1,
+        choices=Gender.choices,
+        verbose_name=_('user gender')
+    )
     role = models.CharField(
-        max_length=10,
+        max_length=30,
         choices=Role.choices,
         default=Role.MENTOR,
         verbose_name=_('User role')

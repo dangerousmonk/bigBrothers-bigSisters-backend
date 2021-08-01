@@ -13,7 +13,7 @@ class City(models.Model):
     )
     is_primary = models.BooleanField(
         default=False,
-        verbose_name=_('Primary City'),
+        verbose_name=_('primary City'),
     )
 
     class Meta:

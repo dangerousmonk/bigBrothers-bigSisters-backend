@@ -11,7 +11,10 @@ SECRET_KEY = 'django-insecure-hek#*0p(5(kn+lqnzq86kjq41t4$dlhfyd3-=ze6&nb@l5q39=
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+
+
+AUTH_USER_MODEL = 'users.CustomUser'
 
 DJANGO_APPS = [
     'django.contrib.admin',
@@ -25,6 +28,7 @@ DJANGO_APPS = [
 PROJECT_APPS = [
     'bbbs.users',
     'bbbs.common',
+    'bbbs.events',
 ]
 
 THIRD_PARTY_APPS = [
