@@ -48,14 +48,14 @@ class Event(models.Model):
     title = models.CharField(
         max_length=200,
         verbose_name=_('title'),
-        unqiue=True,
+        unique=True,
     )
     description = models.TextField(verbose_name=_('description'))
     start_at = models.DateTimeField(verbose_name=_('date start'))
     end_at = models.DateTimeField(verbose_name=_('date finish'))
     seats = models.PositiveSmallIntegerField(
         verbose_name='seats number',
-        validators=validators.MinValueValidator(1)
+        validators=[validators.MinValueValidator(1)],
     )
     city = models.ForeignKey(
         'common.City',
@@ -107,7 +107,7 @@ class EventParticipant(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name='event-participant',
+        related_name='participations',
         verbose_name=_('event participant'),
     )
     event = models.ForeignKey(

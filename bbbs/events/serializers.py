@@ -5,6 +5,11 @@ from .models import Event, EventParticipant
 
 
 class EventSerializer(serializers.ModelSerializer):
+    taken_seats = serializers.IntegerField(read_only=True)
+    booked = serializers.BooleanField(read_only=True)
+    start_at = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
+    end_at = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')  # TODO: make as global drf setting
+
     class Meta:
         model = Event
         fields = [
@@ -19,4 +24,21 @@ class EventSerializer(serializers.ModelSerializer):
             'booked',
             'city'
         ]
-        read_only_fields = ['booked', 'taken_seats']
+
+
+
+class EventParticipantSerializer(serializers.ModelSerializer):
+    user = serializers.HiddenField(
+        default=serializers.CurrentUserDefault()
+    )
+
+    class Meta:
+        model = EventParticipant
+        fields = ['id', 'event', 'user']
+        validators = [
+            serializers.UniqueTogetherValidator(
+                queryset=EventParticipant.objects.all(),
+                fields=['user', 'event'],
+                message=_('You already registered for this event'),
+            )
+        ]
