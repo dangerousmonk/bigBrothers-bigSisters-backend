@@ -1,9 +1,7 @@
-from django.conf import settings
-from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django.utils import timezone
 
+from .choices import TagChoices
 
 class City(models.Model):
     name = models.CharField(
@@ -20,6 +18,24 @@ class City(models.Model):
         verbose_name = _('City')
         verbose_name_plural = _('Cities')
         ordering = ['is_primary']
+
+    def __str__(self):
+        return self.name
+
+
+class Tag(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    slug = models.SlugField(max_length=50, unique=True)
+    model = models.CharField(
+        max_length=50,
+        choices=TagChoices.CHOICES,
+        verbose_name=_('tag model label'),
+    )
+
+    class Meta:
+        verbose_name = _('tag')
+        verbose_name_plural = _('tags')
+        ordering = ['model']
 
     def __str__(self):
         return self.name

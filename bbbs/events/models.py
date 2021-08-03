@@ -40,8 +40,6 @@ class EventsQuerySet(models.QuerySet):
         return qs.filter(city=city, end_at__gt=now())
 
 
-
-
 class Event(models.Model):
     address = models.CharField(max_length=200, verbose_name=_('address'))
     contact = models.CharField(max_length=200, verbose_name=_('contact'))
@@ -66,6 +64,7 @@ class Event(models.Model):
     )
     objects = models.Manager()
     event_objects = EventsQuerySet.as_manager()
+
     # TODO: need Tag?
 
     class Meta:

@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
+from django.core.exceptions import ValidationError
 
 
 class CustomUser(AbstractUser):
@@ -44,13 +45,21 @@ class CustomUser(AbstractUser):
         max_length=30,
         choices=Role.choices,
         default=Role.MENTOR,
-        verbose_name=_('User role')
+        verbose_name=_('user role')
     )
     city = models.ForeignKey(
         'common.City',
         related_name='users',
         null=True,
         on_delete=models.SET_NULL,
+    )
+    curator = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='mentors',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name=_('curator')
     )
     date_joined = models.DateTimeField(default=timezone.now, editable=False)
     USERNAME_FIELD = 'email'
@@ -63,6 +72,25 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.get_full_name()
+
+    def clean(self):
+
+        if self.curator and not self.is_mentor:
+            raise ValidationError(
+                {'curator': _('Curator can be assigned only for mentors')}
+            )
+
+        if self.is_mentor and not self.curator:
+            raise ValidationError(
+                {'curator': _('Mentor must be assigned to curator')}
+            )
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super().save(*args, **kwargs)
+
+
+
 
     @property
     def is_admin(self):
