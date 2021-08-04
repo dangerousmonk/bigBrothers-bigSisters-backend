@@ -1,11 +1,10 @@
-from django.contrib.auth import get_user_model
-from django.db import models
-from django.core import validators
-from django.db.models import Count, OuterRef, Exists
-from django.utils.translation import gettext_lazy as _
 from django.conf import settings
-from django.utils.timezone import now
+from django.core import validators
 from django.core.exceptions import ValidationError
+from django.db import models
+from django.db.models import Count, Exists, OuterRef
+from django.utils.timezone import now
+from django.utils.translation import gettext_lazy as _
 
 
 class EventsQuerySet(models.QuerySet):

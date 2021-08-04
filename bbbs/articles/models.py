@@ -16,7 +16,6 @@ class Article(models.Model):
         verbose_name=_('link to article'),
     )
     content = models.TextField(
-        max_length=1000,
         verbose_name=_('content'),
     )
     image = models.ImageField(
@@ -27,13 +26,15 @@ class Article(models.Model):
     )
     show_on_main = models.BooleanField(
         default=False,
-        verbose_name=_('show on main page'), # TODO: maybe help text?
+        verbose_name=_('show on main page'),# TODO: maybe help text?
+        help_text=_('choose to display on the home page')
     )
+    added_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = _('Article')
         verbose_name_plural = _('Articles')
-        ordering = ['id']
+        ordering = ['-added_at']
 
     def __str__(self):
         return self.title

@@ -1,14 +1,12 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import permissions, viewsets
-from rest_framework import status, serializers
+
+from rest_framework import (generics, mixins, permissions, serializers, status,
+                            viewsets)
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework import permissions
-from rest_framework import mixins, generics
 
 from .models import Event, EventParticipant
-from .serializers import EventSerializer, EventParticipantSerializer
-
+from .serializers import EventParticipantSerializer, EventSerializer
 
 
 class EventViewSet(viewsets.ReadOnlyModelViewSet):

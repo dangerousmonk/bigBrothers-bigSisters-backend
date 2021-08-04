@@ -1,3 +1,11 @@
-from django.shortcuts import render
+from rest_framework.permissions import AllowAny
+from rest_framework.viewsets import ReadOnlyModelViewSet
 
-# Create your views here.
+from .models import City
+from .serializers import CitySerializer
+
+
+class CityViewSet(ReadOnlyModelViewSet):
+    queryset = City.objects.all()
+    serializer_class = CitySerializer
+    permission_classes = [AllowAny]

@@ -1,8 +1,9 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from bbbs.common.choices import BookColorChoices
+
 from .validators import year_validator
-from bbbs.utils import unique_slugify
 
 
 class Book(models.Model):
@@ -24,7 +25,7 @@ class Book(models.Model):
     )
     color = models.CharField(
         max_length=7,
-        default='#E26C2D',  # TODO: change default, add default choices
+        choices=BookColorChoices.CHOICES,  # TODO: help text ?
         verbose_name=_('color'),
     )
     url = models.URLField(
@@ -49,11 +50,6 @@ class Book(models.Model):
 
     def __str__(self):
         return self.title
-
-    def save(self, *args, **kwargs):
-        if not self.id:
-            self.slug = unique_slugify(self.title, self.__class__)
-        return super().save(*args, **kwargs)
 
     def list_tags(self):
         return self.tags.values_list('name', flat=True)

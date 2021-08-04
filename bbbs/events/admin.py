@@ -1,7 +1,4 @@
 from django.contrib import admin
-from .models import Event
-
-
 from django.contrib.admin import ModelAdmin, register, site
 
 from .models import Event, EventParticipant

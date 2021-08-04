@@ -1,8 +1,9 @@
 from django.apps import apps
 from django.contrib import admin
-from .models import CustomUser
 from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 from django.utils.translation import ugettext_lazy as _
+
+from .models import CustomUser
 
 
 class UserAdmin(DjangoUserAdmin):

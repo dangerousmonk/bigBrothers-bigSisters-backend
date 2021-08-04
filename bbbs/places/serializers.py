@@ -3,7 +3,6 @@ from rest_framework import serializers
 from .models import Place
 
 
-
 class InfoField(serializers.Field):
     def to_representation(self, place):
         display = ''

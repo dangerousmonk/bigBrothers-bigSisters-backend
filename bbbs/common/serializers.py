@@ -10,3 +10,13 @@ class TagSerializer(serializers.ModelSerializer):
             'name',
             'slug',
         ]
+
+
+class CitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = City
+        fields = [
+            'id',
+            'name',
+            'is_primary',
+        ]

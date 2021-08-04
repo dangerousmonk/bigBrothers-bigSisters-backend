@@ -1,8 +1,9 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from .choices import TagChoices
 from ..utils import unique_slugify
+from .choices import TagChoices
+
 
 class City(models.Model):
     name = models.CharField(

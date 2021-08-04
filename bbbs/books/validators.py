@@ -5,8 +5,8 @@ from django.utils.translation import gettext_lazy as _
 
 
 def year_validator(value):
-    if value == 0 or value > datetime.datetime.now().year:  # TODO: funny years like 123 should be possible?
+    if value < 1800 or value > datetime.datetime.now().year:
         raise ValidationError(
-            _('%(value)s - year can not be in the future or equals zero'),
+            _('%(value)s - invalid year, ask administrator for help'),
             params={'value': value},
         )

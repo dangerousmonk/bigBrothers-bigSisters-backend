@@ -1,8 +1,10 @@
+from django.conf.urls import include
 from django.contrib import admin
 from django.urls import path
-from django.conf.urls import include
-from .routers import v1_router
+
 from rest_framework_simplejwt import views as jwt_views
+
+from .routers import v1_router
 
 urlpatterns = [
     path('api/v1/', include(v1_router.urls)),

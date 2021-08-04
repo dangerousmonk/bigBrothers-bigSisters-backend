@@ -33,6 +33,7 @@ PROJECT_APPS = [
     'bbbs.articles',
     'bbbs.places',
     'bbbs.books',
+    'bbbs.rights',
 ]
 
 THIRD_PARTY_APPS = [
