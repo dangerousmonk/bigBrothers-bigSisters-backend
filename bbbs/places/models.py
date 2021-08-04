@@ -7,33 +7,33 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 class Place(models.Model):
     class Genders(models.TextChoices):
-        MALE = 'M', _('Мальчик')
-        FEMALE = 'F', _('Девочка')
+        MALE = 'M', _('boy')
+        FEMALE = 'F', _('girl')
 
     class ActivityTypes(models.IntegerChoices):
-        ACTIVE = 0, _('Активный')
-        ENTERTAINING = 1, _('Развлекательный')
-        INFORMATIVE = 2, _('Познавательный')
+        ACTIVE = 0, _('active')
+        ENTERTAINING = 1, _('fun')
+        INFORMATIVE = 2, _('educative')
 
     chosen = models.BooleanField(
         default=False,
-        verbose_name=_('Выбор наставника'),
+        verbose_name=_('mentor choice'),
     )
     verified = models.BooleanField(
         default=False,
-        verbose_name=_('Проверено для публикации'),
+        verbose_name=_('verified by moderator'),
     )
     show_on_main = models.BooleanField(
         default=True,
-        verbose_name=_('Показать на главной'),
+        verbose_name=_('show on main page'),
     )
     title = models.CharField(
         max_length=200,
-        verbose_name=_('Название'),
+        verbose_name=_('title'),
     )
     address = models.CharField(
         max_length=200,
-        verbose_name=_('Адрес'),
+        verbose_name=_('address'),
     )
     city = models.ForeignKey(
         'common.City',
@@ -59,7 +59,7 @@ class Place(models.Model):
         verbose_name=_('activity type'),
     )
     description = models.TextField(
-        verbose_name=_('Комментарий'),
+        verbose_name=_('description'),
         help_text=_('share your experience'),
     )
     link = models.URLField(
@@ -72,7 +72,7 @@ class Place(models.Model):
         'common.Tag',
         related_name='places',
         blank=True,
-        verbose_name=_('Теги')
+        verbose_name=_('tags')
     )
     image_url = models.ImageField(
         null=True,

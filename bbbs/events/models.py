@@ -116,7 +116,7 @@ class EventParticipant(models.Model):
         verbose_name=_('event'),
     )
     registered_at = models.DateTimeField(auto_now_add=True)
-    modified_at = models.DateTimeField(auto_now=True)
+    modified_at = models.DateTimeField(auto_now=True)  # TODO: is this needed?
 
     class Meta:
         verbose_name = _('Event participant')

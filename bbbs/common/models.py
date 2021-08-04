@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from .choices import TagChoices
+from ..utils import unique_slugify
 
 class City(models.Model):
     name = models.CharField(
@@ -11,7 +12,7 @@ class City(models.Model):
     )
     is_primary = models.BooleanField(
         default=False,
-        verbose_name=_('primary City'),
+        verbose_name=_('primary city'),
     )
 
     class Meta:
@@ -24,8 +25,8 @@ class City(models.Model):
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=50, unique=True)
-    slug = models.SlugField(max_length=50, unique=True)
+    name = models.CharField(max_length=50)
+    slug = models.SlugField(max_length=70, editable=False, unique=True)
     model = models.CharField(
         max_length=50,
         choices=TagChoices.CHOICES,
@@ -39,3 +40,8 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.slug = unique_slugify(self.name, self.__class__)
+        return super().save(*args, **kwargs)

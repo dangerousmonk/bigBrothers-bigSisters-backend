@@ -5,12 +5,18 @@ from .models import Article
 
 class ArticleSerializer(serializers.ModelSerializer):
     image = serializers.ImageField(
-        max_length=None,
+        required=False,
         allow_empty_file=False,
         use_url=False,
-        required=False,
     )
 
     class Meta:
         model = Article
-        exclude = ['image_url']
+        fields = [
+            'title',
+            'author_info',
+            'article_url',
+            'content',
+            'image',
+            'show_on_main',
+        ]
