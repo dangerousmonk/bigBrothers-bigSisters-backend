@@ -32,10 +32,12 @@ PROJECT_APPS = [
     'bbbs.events',
     'bbbs.articles',
     'bbbs.places',
+    'bbbs.books',
 ]
 
 THIRD_PARTY_APPS = [
     'rest_framework',
+    'django_filters'
 
 ]
 
