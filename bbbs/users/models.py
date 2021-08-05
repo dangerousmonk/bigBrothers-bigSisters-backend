@@ -94,7 +94,7 @@ class CustomUser(AbstractUser):
 
     @property
     def is_admin(self):
-        return self.role == self.Role.ADMIN
+        return self.role == self.Role.ADMIN # TODO: or superuser when created via console
 
     @property
     def is_moderator(self):

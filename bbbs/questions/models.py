@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -27,7 +28,13 @@ class Question(models.Model):
         blank=True,
         verbose_name=_('questions'),
     )
-    # TODO: add question author
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='questions',
+        verbose_name=_('author'),
+
+    )
 
     class Meta:
         ordering = ['-added_at']

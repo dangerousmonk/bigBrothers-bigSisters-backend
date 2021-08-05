@@ -9,7 +9,6 @@ class QuestionSerializer(serializers.ModelSerializer):
     added_at = serializers.DateTimeField(read_only=True)
     show_on_main = serializers.BooleanField(read_only=True)
 
-
     class Meta:
         model = Question
         fields = [
@@ -18,6 +17,5 @@ class QuestionSerializer(serializers.ModelSerializer):
             'answer',
             'added_at',
             'show_on_main',
-            'tags',         # TODO: make nested
+            'tags',  # TODO: make nested
         ]
-

@@ -9,20 +9,23 @@ from bbbs.common.serializers import TagSerializer
 
 from .models import Question
 from .serializers import QuestionSerializer
-
+from .permissions import IsOwnerAdminModeratorOrReadOnly
 
 class QuestionViewSet(
     GenericViewSet,
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
     mixins.CreateModelMixin,
-    mixins.UpdateModelMixin,  # TODO: figma - update allowed?
+    mixins.UpdateModelMixin,
 ):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsOwnerAdminModeratorOrReadOnly]
 
     # filter_backends = [DjangoFilterBackend]
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
 
     @action(methods=['GET', ], detail=False,
             url_path='tags', url_name='questions-tags')

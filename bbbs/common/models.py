@@ -19,7 +19,7 @@ class City(models.Model):
     class Meta:
         verbose_name = _('City')
         verbose_name_plural = _('Cities')
-        ordering = ['is_primary']
+        ordering = ['is_primary'] #TODO: check ordering
 
     def __str__(self):
         return self.name
