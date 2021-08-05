@@ -18,6 +18,6 @@ class RightViewSet(ReadOnlyModelViewSet):
     @action(methods=['GET', ], detail=False,
             url_path='tags', url_name='rights-tags')
     def get_tags(self, request):
-        tags = Tag.objects.filter(model='books')
+        tags = Tag.objects.filter(model='rights')
         serializer = TagSerializer(tags, many=True)
         return Response(serializer.data)

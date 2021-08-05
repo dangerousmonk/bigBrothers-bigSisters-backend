@@ -22,7 +22,7 @@ class Article(models.Model):
         upload_to='articles/',
         blank=True,
         null=True,
-        verbose_name=_('image'), # TODO: validate image size
+        verbose_name=_('image'), # TODO: validate image size, add color?
     )
     show_on_main = models.BooleanField(
         default=False,

@@ -11,5 +11,5 @@ class ArticleAdmin(ModelAdmin):
         'show_on_main', 'added_at',
     )
     search_fields = ('title',)
-    list_filter = ('show_on_main')
+    list_filter = ('show_on_main',)
     empty_value_display = _('empty')

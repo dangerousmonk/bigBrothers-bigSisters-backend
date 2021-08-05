@@ -33,7 +33,7 @@ class BookColorChoices:
 
 class RightColorChoices:
     YELLOW = '#F8D162'
-    GREEN = '##8CDD94'
+    GREEN = '#8CDD94'
     ORANGE = '#FF8585'
     LIGHT_BLUE = '#C8D1FF'
 
