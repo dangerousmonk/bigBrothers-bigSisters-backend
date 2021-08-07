@@ -35,12 +35,12 @@ PROJECT_APPS = [
     'bbbs.books',
     'bbbs.rights',
     'bbbs.questions',
+    'bbbs.story',
 ]
 
 THIRD_PARTY_APPS = [
     'rest_framework',
-    'django_filters'
-
+    'django_filters',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_PARTY_APPS
