@@ -2,18 +2,20 @@
  -*- coding: utf-8 -*-
 Base settings for bbbs project.
 """
-
 from pathlib import Path
 import datetime
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-hek#*0p(5(kn+lqnzq86kjq41t4$dlhfyd3-=ze6&nb@l5q39='
+SECRET_KEY = env.str('SECRET_KEY')
 
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
@@ -36,6 +38,7 @@ PROJECT_APPS = [
     'bbbs.rights',
     'bbbs.questions',
     'bbbs.story',
+    'bbbs.diary',
 ]
 
 THIRD_PARTY_APPS = [
@@ -109,7 +112,6 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': datetime.timedelta(days=365),
 }
 
-
 LANGUAGE_CODE = 'ru-ru'
 
 TIME_ZONE = 'UTC'
@@ -123,3 +125,12 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS')
+EMAIL_HOST = env.str('EMAIL_HOST')
+EMAIL_PORT = env.int('EMAIL_PORT')
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST_USER = env.str('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD')
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
