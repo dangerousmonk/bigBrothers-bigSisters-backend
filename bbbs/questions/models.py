@@ -17,6 +17,10 @@ class Question(models.Model):
         auto_now_add=True,
         verbose_name=_('publication date'),
     )
+    modified_at = models.DateTimeField(
+        auto_now=True,
+        verbose_name=_('modified at'),
+    )
     show_on_main = models.BooleanField(
         default=False,
         verbose_name=_('show on main page'),

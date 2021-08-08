@@ -16,7 +16,7 @@ class Book(models.Model):
         verbose_name=_('author'),
     )
     year = models.PositiveSmallIntegerField(
-        verbose_name=_('publication date'),
+        verbose_name=_('publication year'),
         validators=[year_validator, ],
     )
     description = models.TextField(
@@ -36,7 +36,7 @@ class Book(models.Model):
         editable=False,
         verbose_name=_('slug'),
     )
-    added_at = models.DateTimeField(auto_now_add=True)
+    added_at = models.DateTimeField(auto_now_add=True, verbose_name=_('added_at'))
     tags = models.ManyToManyField(
         'common.Tag',
         related_name='books',

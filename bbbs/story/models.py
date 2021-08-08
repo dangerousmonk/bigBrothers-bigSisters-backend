@@ -28,9 +28,13 @@ class Story(models.Model):
         verbose_name=_('story author'),
 
     )
-    story_added_at = models.DateTimeField(
+    added_at = models.DateTimeField(
         auto_now_add=True,
         verbose_name=_('story added at'),
+    )
+    modified_at = models.DateTimeField(
+        auto_now=True,
+        verbose_name=_('story modified at'),
     )
     intro = models.CharField(
         max_length=200,
@@ -53,7 +57,7 @@ class Story(models.Model):
     class Meta:
         verbose_name = _('Story')
         verbose_name_plural = _('Stories')
-        ordering = ['-story_added_at']
+        ordering = ['-added_at']
 
     def __str__(self):
         return self.title
