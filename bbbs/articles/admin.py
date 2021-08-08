@@ -10,6 +10,6 @@ class ArticleAdmin(ModelAdmin):
         'id', 'title', 'author_info', 'article_url', 'content', 'image',
         'show_on_main', 'added_at',
     )
-    search_fields = ('title',)
+    search_fields = ('title','author_info')
     list_filter = ('show_on_main',)
     empty_value_display = _('empty')

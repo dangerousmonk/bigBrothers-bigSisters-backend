@@ -1,23 +1,18 @@
+from rest_framework import mixins
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
-from rest_framework.viewsets import ReadOnlyModelViewSet, GenericViewSet
-from rest_framework import mixins
+from rest_framework.viewsets import GenericViewSet, ReadOnlyModelViewSet
 
 from bbbs.common.models import Tag
 from bbbs.common.serializers import TagSerializer
-
+from bbbs.common.mixins import ListRetrieveCreateUpdateMixin
 from .models import Question
+from bbbs.common.permissions import IsOwnerAdminModeratorOrReadOnly
 from .serializers import QuestionSerializer
-from .permissions import IsOwnerAdminModeratorOrReadOnly
 
-class QuestionViewSet(
-    GenericViewSet,
-    mixins.ListModelMixin,
-    mixins.RetrieveModelMixin,
-    mixins.CreateModelMixin,
-    mixins.UpdateModelMixin,
-):
+
+class QuestionViewSet(ListRetrieveCreateUpdateMixin):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
     permission_classes = [IsOwnerAdminModeratorOrReadOnly]

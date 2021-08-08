@@ -4,6 +4,9 @@ from .models import Story
 
 
 class StorySerializer(serializers.ModelSerializer):
+    image = serializers.ImageField(allow_empty_file=False, use_url=False, required=False)
+
+
     class Meta:
         model = Story
         fields = [

@@ -43,3 +43,15 @@ class RightColorChoices:
         (ORANGE, _('orange')),
         (LIGHT_BLUE, _('light blue')),
     ]
+
+
+class DiaryMarkChoices:
+    GOOD = 'good'
+    BAD = 'bad'
+    NEUTRAL = 'neutral'
+
+    CHOICES = [
+        (GOOD, _('good')),
+        (BAD, _('bad')),
+        (NEUTRAL, _('neutral')),
+    ]
