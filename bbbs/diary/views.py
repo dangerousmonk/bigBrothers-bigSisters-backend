@@ -3,7 +3,7 @@ from .serializers import DiarySerializer
 from rest_framework import viewsets
 from bbbs.common.permissions import IsOwnerAdminModeratorOrReadOnly
 from rest_framework.decorators import action
-from bbbs.users.serializers import EmailSerializer
+from bbbs.users.serializers import EmailSerializer, BaseEmailSerializer
 from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext_lazy as _
 from bbbs.users.services import send_email
@@ -27,11 +27,18 @@ class DiaryViewSet(viewsets.ModelViewSet):
     @action(methods=['post'], detail=True)
     def send_curator(self, request, pk=None):
         author = request.user
+        if not author.is_mentor:
+            data = {
+                'success': False,
+                'message': _('only mentors can send diaries to their curators')
+            }
+            return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
+
         diary = get_object_or_404(Diary, pk=pk, author=author)
 
         if not diary.sent_to_curator:
             to_email = author.curator.email
-            serializer = EmailSerializer(data={'email': to_email})
+            serializer = BaseEmailSerializer(data={'email': to_email})
             serializer.is_valid(raise_exception=True)
 
             author_name = author.get_full_name()

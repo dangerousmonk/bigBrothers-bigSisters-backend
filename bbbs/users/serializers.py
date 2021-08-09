@@ -22,18 +22,26 @@ User = get_user_model()
 
 class ProfileSerializer(serializers.ModelSerializer):
     city = CitySerializer()
-    user = serializers.PrimaryKeyRelatedField(read_only=True, source='pk')
 
     class Meta:
         model = User
         fields = [
             'id',
-            'user',
-            'city'
+            'first_name',
+            'last_name',
+            'email',
+            'city',
         ]
 
 
-class EmailSerializer(serializers.Serializer):
+class BaseEmailSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True, min_length=2)
+
+    class Meta:
+        fields = ['email']
+
+
+class EmailSerializer(BaseEmailSerializer):
     email = serializers.EmailField(required=True, min_length=2)
 
     class Meta:

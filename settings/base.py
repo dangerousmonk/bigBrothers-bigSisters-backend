@@ -5,6 +5,7 @@ Base settings for bbbs project.
 from pathlib import Path
 import datetime
 import environ
+import os
 
 env = environ.Env()
 environ.Env.read_env()
@@ -105,7 +106,8 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 6
+    'PAGE_SIZE': 6,
+    'DATETIME_FORMAT': '%Y-%m-%dT%H:%M:%S%z'
 }
 
 SIMPLE_JWT = {
@@ -122,7 +124,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -134,3 +135,16 @@ EMAIL_HOST_USER = env.str('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD')
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
+DATE_INPUT_FORMATS = (
+    "%Y-%m-%d", "%m/%d/%Y", "%d/%m/%Y", "%b %d %Y",
+    "%b %d, %Y", "%d %b %Y", "%d %b, %Y", "%B %d %Y",
+    "%B %d, %Y", "%d %B %Y", "%d %B, %Y"
+)
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")

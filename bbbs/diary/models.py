@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django.utils.timezone import now
 from bbbs.common.choices import DiaryMarkChoices
 
 
@@ -34,7 +33,7 @@ class Diary(models.Model):
     mark = models.CharField(
         max_length=20,
         choices=DiaryMarkChoices.CHOICES,
-        verbose_name=_('color'),
+        verbose_name=_('mark'),
         help_text=_('Rate the time spent')
     )
     author = models.ForeignKey(
