@@ -17,15 +17,15 @@ from django.contrib.auth.password_validation import validate_password
 from rest_framework.exceptions import ValidationError
 from django.contrib.auth import get_user_model
 
-
 User = get_user_model()
+
 
 class ProfileSerializer(serializers.ModelSerializer):
     city = CitySerializer()
     user = serializers.PrimaryKeyRelatedField(read_only=True, source='pk')
 
     class Meta:
-        model = settings.AUTH_USER_MODEL
+        model = User
         fields = [
             'id',
             'user',
@@ -39,7 +39,6 @@ class EmailSerializer(serializers.Serializer):
     class Meta:
         fields = ['email']
 
-
     def validate(self, attrs):
         try:
             email = attrs['data'].get('email', '')
@@ -48,15 +47,18 @@ class EmailSerializer(serializers.Serializer):
                 uidb64 = urlsafe_base64_encode(user.id)
                 token = PasswordResetTokenGenerator().make_token(user)
                 current_domain = get_current_site(request=attrs['data'].get('request')).domain
-                relative_link = reverse('password-reset-check',kwargs={'uidb64':uidb64, 'token': token})
-                absolute_url = 'http://'+current_domain+relative_link
+                relative_link = reverse('password-reset-check', kwargs={'uidb64': uidb64, 'token': token})
+                absolute_url = 'http://' + current_domain + relative_link
                 email_body = f'Hello \n you request password change at {current_domain}. Use link to reset your password \n {absolute_url}'
                 data = {'email_subject': 'Reset your password', 'email_to': [user.email], 'email_body': email_body}
                 send_email(data)
                 return attrs
-            return Response(data={'Success': False, 'message': 'No user found with provivded email'}, status=status.HTTP_404_NOT_FOUND)
+            return Response(data={'Success': False, 'message': 'No user found with provivded email'},
+                            status=status.HTTP_404_NOT_FOUND)
         except RequestException:
-            return Response(data={'Success':False, 'message': 'Failed to send link, try again later'}, status=status.HTTP_504_GATEWAY_TIMEOUT)
+            return Response(data={'Success': False, 'message': 'Failed to send link, try again later'},
+                            status=status.HTTP_504_GATEWAY_TIMEOUT)
+
 
 class SetNewPasswordSerializer(serializers.Serializer):
     new_password = serializers.CharField(min_length=6, max_length=86, write_only=True)
@@ -71,8 +73,8 @@ class SetNewPasswordSerializer(serializers.Serializer):
         user = User.objects.get(id=id)  # TODO: or 404?
         try:
             validate_password(attrs['new_password'], user)
-            if not PasswordResetTokenGenerator().check_token(user,token):
-                raise ValidationError({'Invalid':'The reset link is invalid'},code=401)
+            if not PasswordResetTokenGenerator().check_token(user, token):
+                raise ValidationError({'Invalid': 'The reset link is invalid'}, code=401)
             user.set_password(new_password)
             if hasattr(user, 'last_login'):
                 user.last_login = now()

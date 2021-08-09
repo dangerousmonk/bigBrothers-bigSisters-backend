@@ -18,6 +18,7 @@ class Book(models.Model):
     year = models.PositiveSmallIntegerField(
         verbose_name=_('publication year'),
         validators=[year_validator, ],
+        help_text=_('add publication year'),
     )
     description = models.TextField(
         max_length=1024,
@@ -25,11 +26,13 @@ class Book(models.Model):
     )
     color = models.CharField(
         max_length=7,
-        choices=BookColorChoices.CHOICES,  # TODO: help text ?
+        choices=BookColorChoices.CHOICES,
         verbose_name=_('color'),
+        help_text=_('choose color for the book cover')
     )
     url = models.URLField(
-        verbose_name=_('book url')
+        verbose_name=_('book url'),
+        help_text=_('link to read or buy book'),
     )
     slug = models.SlugField(
         max_length=200,
@@ -40,7 +43,8 @@ class Book(models.Model):
     tags = models.ManyToManyField(
         'common.Tag',
         related_name='books',
-        verbose_name=_('tags')
+        verbose_name=_('tags'),
+        help_text=_('tags appropriate for this book'),
     )
 
     class Meta:

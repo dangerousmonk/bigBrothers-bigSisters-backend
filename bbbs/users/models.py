@@ -51,6 +51,7 @@ class CustomUser(AbstractUser):
         'common.City',
         related_name='users',
         null=True,
+        blank=True,
         on_delete=models.SET_NULL,
     )
     curator = models.ForeignKey(
@@ -63,7 +64,7 @@ class CustomUser(AbstractUser):
     )
     date_joined = models.DateTimeField(default=timezone.now, editable=False)
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
+    REQUIRED_FIELDS = ['username', 'first_name', 'last_name', 'gender']
 
     class Meta:
         verbose_name = _('User')
@@ -80,7 +81,7 @@ class CustomUser(AbstractUser):
                 {'curator': _('Curator can be assigned only for mentors')}
             )
 
-        if self.is_mentor and not self.curator:
+        if self.is_mentor and not self.curator and not self.is_superuser:
             raise ValidationError(
                 {'curator': _('Mentor must be assigned to curator')}
             )
