@@ -2,7 +2,7 @@ import factory
 from django.conf import settings
 from datetime import date, timedelta
 import random
-from bbbs.common.choices import DiaryMarkChoices
+from bbbs.common.choices import DiaryMarkChoices, UserRoleChoices, UserGenderChoices
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -15,10 +15,10 @@ class UserFactory(factory.django.DjangoModelFactory):
     password = factory.LazyAttribute(lambda obj: f'{obj.username}very-secret')
     first_name = factory.Sequence(lambda n: f'John{n}')
     last_name = factory.Sequence(lambda n: f'Doe{n}')
-    role = factory.Iterator(['curator', 'moderator', 'moderator_reg'])
-    gender = factory.Iterator(['M', 'F'])
+    role = factory.Iterator([UserRoleChoices.CURATOR, UserRoleChoices.MODERATOR])
+    gender = factory.Iterator([UserGenderChoices.MALE, UserGenderChoices.FEMALE])
 
-    # TODO: make password hashed?
+    #TODO: make password hashed?
 
 
 class DiaryFactory(factory.django.DjangoModelFactory):
