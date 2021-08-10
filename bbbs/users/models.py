@@ -4,20 +4,10 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from bbbs.common.choices import UserRoleChoices, UserGenderChoices
 
 
 class CustomUser(AbstractUser):
-    class Role(models.TextChoices):
-        ADMIN = 'admin', _('Administrator')
-        MODERATOR_REG = 'moderator_reg', _('Regional moderator')
-        MODERATOR = 'moderator', _('Moderator')
-        MENTOR = 'mentor', _('Mentor')
-        CURATOR = 'curator', _('Curator')
-
-    class Gender(models.TextChoices):
-        MALE = 'M', _('Male')
-        FEMALE = 'F', _('Female')
-
     email = models.EmailField(
         unique=True,
         blank=False,
@@ -38,13 +28,13 @@ class CustomUser(AbstractUser):
     )
     gender = models.CharField(
         max_length=1,
-        choices=Gender.choices,
+        choices=UserGenderChoices.CHOICES,
         verbose_name=_('user gender')
     )
     role = models.CharField(
         max_length=30,
-        choices=Role.choices,
-        default=Role.MENTOR,
+        choices=UserRoleChoices.CHOICES,
+        default=UserRoleChoices.MENTOR,
         verbose_name=_('user role')
     )
     city = models.ForeignKey(
@@ -91,25 +81,22 @@ class CustomUser(AbstractUser):
         self.full_clean()
         return super().save(*args, **kwargs)
 
-
-
-
     @property
     def is_admin(self):
-        return self.role == self.Role.ADMIN # TODO: or superuser when created via console
+        return self.role == UserRoleChoices.ADMIN  # TODO: or superuser when created via console
 
     @property
     def is_moderator(self):
-        return self.role == self.Role.MODERATOR
+        return self.role == UserRoleChoices.MODERATOR
 
     @property
     def is_moderator_reg(self):
-        return self.role == self.Role.MODERATOR_REG
+        return self.role == UserRoleChoices.MODERATOR_REG
 
     @property
     def is_mentor(self):
-        return self.role == self.Role.MENTOR
+        return self.role == UserRoleChoices.MENTOR
 
     @property
     def is_curator(self):
-        return self.role == self.Role.CURATOR
+        return self.role == UserRoleChoices.CURATOR

@@ -1,6 +1,32 @@
 from django.utils.translation import gettext_lazy as _
 
 
+class UserRoleChoices:
+    ADMIN = 'admin'
+    MODERATOR_REG = 'moderator_reg'
+    MODERATOR = 'moderator'
+    MENTOR = 'mentor'
+    CURATOR = 'curator'
+
+    CHOICES = [
+        (ADMIN, _('Administrator')),
+        (MODERATOR_REG, _('Regional moderator')),
+        (MODERATOR, _('Moderator')),
+        (MENTOR, _('Mentor')),
+        (CURATOR, _('Curator')),
+    ]
+
+
+class UserGenderChoices:
+    MALE = 'M'
+    FEMALE = 'F'
+
+    CHOICES = [
+        (MALE, _('Male',)),
+        (FEMALE, _('Female',)),
+    ]
+
+
 class TagChoices:
     EVENTS = 'events'
     PLACES = 'places'
