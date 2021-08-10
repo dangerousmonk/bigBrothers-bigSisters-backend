@@ -10,3 +10,11 @@ def year_validator(value):
             _('%(value)s - invalid year, enter the sensible year value'),
             params={'value': value},
         )
+
+
+def diary_year_validator(value):
+    if value.year < 2021 or value > datetime.date.today():
+        raise ValidationError(
+            _('%(value)s - invalid date, can not be in the future or earlier last year'),
+            params={'value': value},
+        )

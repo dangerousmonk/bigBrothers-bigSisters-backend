@@ -17,7 +17,7 @@ class Book(models.Model):
     )
     year = models.PositiveSmallIntegerField(
         verbose_name=_('publication year'),
-        validators=[year_validator, ],
+        validators=[year_validator,],
         help_text=_('add publication year'),
     )
     description = models.TextField(

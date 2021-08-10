@@ -60,7 +60,8 @@ class CustomUser(AbstractUser):
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        verbose_name=_('curator')
+        verbose_name=_('curator'),
+        help_text=_('choose curator if new user is mentor'),
     )
     date_joined = models.DateTimeField(default=timezone.now, editable=False)
     USERNAME_FIELD = 'email'
@@ -83,7 +84,7 @@ class CustomUser(AbstractUser):
 
         if self.is_mentor and not self.curator and not self.is_superuser:
             raise ValidationError(
-                {'curator': _('Mentor must be assigned to curator')}
+                {'curator': _('Curator must be assigned to mentor')}
             )
 
     def save(self, *args, **kwargs):
