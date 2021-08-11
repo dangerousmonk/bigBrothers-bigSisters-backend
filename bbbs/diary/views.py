@@ -22,7 +22,7 @@ class DiaryViewSet(viewsets.ModelViewSet):
         return Diary.objects.filter(author=self.request.user)
 
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user)  # TODO: perform update author logic
+        serializer.save(author=self.request.user)
 
     @action(methods=['post'], detail=True)
     def send_curator(self, request, pk=None):

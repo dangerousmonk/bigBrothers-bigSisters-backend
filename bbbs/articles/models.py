@@ -22,11 +22,11 @@ class Article(models.Model):
         upload_to='articles/',
         blank=True,
         null=True,
-        verbose_name=_('image'), # TODO: validate image size, add color?
+        verbose_name=_('image'), # TODO: validate image size,
     )
     show_on_main = models.BooleanField(
         default=False,
-        verbose_name=_('show on main page'),# TODO: maybe help text?
+        verbose_name=_('show on main page'),
         help_text=_('choose to display on the home page')
     )
     added_at = models.DateTimeField(auto_now_add=True, verbose_name=_('added at'))

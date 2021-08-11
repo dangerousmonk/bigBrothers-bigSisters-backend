@@ -1,18 +1,12 @@
 from .serializers import ProfileSerializer, EmailSerializer, SetNewPasswordSerializer
-from rest_framework.decorators import api_view
-from rest_framework.decorators import permission_classes
 from django.conf import settings
-from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin
-from rest_framework.viewsets import GenericViewSet
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import RetrieveUpdateAPIView
-from rest_framework import permissions
-from django.core.mail import send_mail
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
-from django.utils.encoding import smart_str, smart_bytes, DjangoUnicodeDecodeError
-from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.utils.encoding import smart_str, DjangoUnicodeDecodeError
+from django.utils.http import urlsafe_base64_decode
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from .models import CustomUser
