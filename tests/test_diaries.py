@@ -2,9 +2,9 @@
 # Test endpoint is available only for authorized clients - DONE
 # Test list endpoint  returns paginated results - DONE
 # Test mentor can submit new diary via endpoint - DONE
-# Test mentor can update his diary
-# Test mentor can delete his own diary
-# Test mentor can not delete another mentors diary
+# Test mentor can update his diary - DONE
+# Test mentor can delete his own diary DONE
+# Test mentor can not delete another mentors diary - DONE
 # Test mentor can send his diary to curators
 
 import pytest
@@ -74,14 +74,6 @@ class TestDiaryEndpoints:
 
         assert response.status_code == 404, 'must return 404 for not mentors diary'  # TODO: restrict via permissions?
 
-    INVALID_DATES = [
-        '',
-        '2020-01-01',
-        '2029-01-01',
-        '01-01-2021',
-        '12345'
-    ]
-
     def test_diary_post(self, mentor, mentor_client):
         num_diaries = Diary.objects.count()
         url = reverse('diaries-list')
@@ -105,7 +97,15 @@ class TestDiaryEndpoints:
         response = mentor_client.post(url, data=expected, format='json')
         assert response.status_code == 400
 
-    @pytest.mark.parametrize('meeting_date', INVALID_DATES)
+    INVALID_MEETING_DATES = [
+        '',
+        '2020-01-01',
+        '2029-01-01',
+        '01-01-2021',
+        '12345'
+    ]
+
+    @pytest.mark.parametrize('meeting_date', INVALID_MEETING_DATES)
     def test_diary_post_with_invalid_meeting_date(self, mentor_client, meeting_date):
         url = reverse('diaries-list')
         diary = factories.DiaryFactory.build()
@@ -119,20 +119,81 @@ class TestDiaryEndpoints:
         response = mentor_client.post(url, data=expected, format='json')
         assert response.status_code == 400
 
+    INVALID_PLACE = [
+        '',
+        'a',
+        'a' * 101,
+    ]
+
+    @pytest.mark.parametrize('place', INVALID_PLACE)
+    def test_diary_post_with_invalid_place(self, mentor_client, place):
+        url = reverse('diaries-list')
+        diary = factories.DiaryFactory.build()
+        expected = {
+            'place': place,
+            'meeting_date': diary.meeting_date.strftime('%Y-%m-%d'),
+            'description': diary.description,
+            'mark': diary.mark,
+        }
+
+        response = mentor_client.post(url, data=expected, format='json')
+        assert response.status_code == 400
+
     def test_diary_update(self, mentor, mentor_client):
         old_diary = factories.DiaryFactory.create(author=mentor)
         new_diary = factories.DiaryFactory.build()
-        expected = {
-            'id': new_diary.id,
+        expected_json = {
             'place': new_diary.place,
             'meeting_date': new_diary.meeting_date.strftime('%Y-%m-%d'),
             'description': new_diary.description,
-            'image': None,  # TODO: test image
-            'sent_to_curator': new_diary.sent_to_curator,
-            'mark': new_diary.mark,
+            'mark': new_diary.mark
         }
-        url = reverse('diaries-detail', kwargs={'pk':old_diary.id})
-        response = mentor_client.put(url, expected, format='json')
-        assert response.status_code == 200
-        assert response.json() == expected
 
+        url = reverse('diaries-detail', kwargs={'pk': old_diary.id})
+        response = mentor_client.put(url, expected_json, format='json')
+
+        expected_json['id'] = old_diary.id
+        expected_json['sent_to_curator'] = old_diary.sent_to_curator
+        expected_json['added_at'] = old_diary.added_at.strftime(
+            '%Y-%m-%dT%H:%M:%S%z')
+        # Note: build() is used, no save(), fix later
+        expected_json['modified_at'] = old_diary.modified_at.strftime(
+            '%Y-%m-%dT%H:%M:%S%z')
+        expected_json['image'] = old_diary.image
+
+        assert response.status_code == 200
+        assert response.json() == expected_json
+
+    FIELDS = [
+        'place',
+        'meeting_date',
+        'description',
+        'mark'
+    ]
+
+    @pytest.mark.parametrize('field', FIELDS)
+    def test_diary_partial_update(self, field, mentor, mentor_client):
+        old_diary = factories.DiaryFactory.create(author=mentor)
+
+        new_diary = factories.DiaryFactory.build()
+        url = reverse('diaries-detail', kwargs={'pk': old_diary.id})
+
+        valid_field = {field: new_diary.__dict__[field]}
+        if field == 'meeting_date':
+            valid_field = {field: new_diary.__dict__[field].strftime('%Y-%m-%d')}
+        response = mentor_client.patch(url, valid_field, format='json')
+
+        assert response.status_code == 200 or response.status_code == 301
+        assert response.json()[field] == valid_field[field]
+
+    def test_diary_delete(self, mentor, mentor_client):
+        diary = factories.DiaryFactory.create(author=mentor)
+        diary2 = factories.DiaryFactory.create()
+
+        url = reverse('diaries-detail', kwargs={'pk': diary2.id})
+        response = mentor_client.delete(url)
+        assert response.status_code == 404  # TODO: throw permissions error instead of 404
+
+        url = reverse('diaries-detail', kwargs={'pk': diary.id})
+        response = mentor_client.delete(url)
+        assert response.status_code == 204 or response.status_code == 301
