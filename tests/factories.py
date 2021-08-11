@@ -1,4 +1,5 @@
 import factory
+from factory import fuzzy
 from django.conf import settings
 from datetime import date, timedelta
 import random
@@ -18,16 +19,15 @@ class UserFactory(factory.django.DjangoModelFactory):
     role = factory.Iterator([UserRoleChoices.CURATOR, UserRoleChoices.MODERATOR])
     gender = factory.Iterator([UserGenderChoices.MALE, UserGenderChoices.FEMALE])
 
-    #TODO: make password hashed?
+    # TODO: make password hashed?
 
 
 class DiaryFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = 'diary.Diary'
-
     place = factory.Sequence(lambda n: f'place{n}')
-    meeting_date = factory.LazyAttribute(lambda o: date.today() - timedelta(days=7))
-    description = factory.Sequence(lambda n: f'diary{n}')
+    meeting_date = factory.Sequence(lambda n: date(2021, 7,1) + timedelta(days=n))
+    description = factory.Faker('text')
     # TODO: image
     mark = factory.LazyFunction(
         lambda: random.choice(
@@ -36,9 +36,9 @@ class DiaryFactory(factory.django.DjangoModelFactory):
     )
     author = factory.SubFactory(UserFactory)
 
+
 class TagFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = 'common.Tag'
 
     name = 'tag'
-
