@@ -1,8 +1,13 @@
-import factory
-from django.conf import settings
-from datetime import date, timedelta
 import random
-from bbbs.common.choices import DiaryMarkChoices, UserRoleChoices, UserGenderChoices, BookColorChoices, RightColorChoices
+from datetime import date, timedelta
+
+from django.conf import settings
+
+import factory
+
+from bbbs.common.choices import (BookColorChoices, DiaryMarkChoices,
+                                 RightColorChoices, UserGenderChoices,
+                                 UserRoleChoices)
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -80,6 +85,11 @@ class CityFactory(factory.django.DjangoModelFactory):
     is_primary = factory.LazyFunction(lambda: random.choice([True, False]))
 
 
+def get_random_color():
+    color_choices = [option[0] for option in RightColorChoices.CHOICES]
+    return random.choice(color_choices)
+
+
 class RightFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = 'rights.Right'
@@ -87,8 +97,37 @@ class RightFactory(factory.django.DjangoModelFactory):
     title = factory.Sequence(lambda n: f'right title-{n}')
     description = factory.Sequence(lambda n: f'right description-{n}')
     text = factory.Faker('text')
-    color =  factory.LazyFunction(lambda: random.choice(RightColorChoices.CHOICES))
-    #image = ()
-    #tags = ()
+    color = factory.LazyFunction(get_random_color)
+    image = factory.django.ImageField(width=1024, height=768)
+
+    @factory.post_generation
+    def tags(self, create, extracted, **kwargs):
+        if not create:
+            return
+        if extracted:
+            for tag in extracted:
+                self.tags.add(tag)
 
 
+class ArticleFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = 'articles.Article'
+
+    title = factory.Sequence(lambda n: f'article title-{n}')
+    author_info = factory.Sequence(lambda n: f'famous author-{n}')
+    article_url = factory.Faker('url')
+    content = factory.Faker('text')
+    image = factory.django.ImageField(width=1024, height=768)
+
+class StoryFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = 'story.Story'
+
+    title = factory.Sequence(lambda n: f'stroy title-{n}')
+    child_name = factory.Sequence(lambda n: f'Child-{n}')
+    friends_since = factory.Sequence(lambda n: date(2021, 6, 1) + timedelta(days=n))
+    author = factory.SubFactory(UserFactory)
+    intro = factory.Sequence(lambda n: f'story intro-{n}')
+    text = factory.Faker('text')
+    quote = factory.Sequence(lambda n: f'story quote-{n}')
+    image = factory.django.ImageField(width=1024, height=768)

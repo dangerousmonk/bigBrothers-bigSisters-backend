@@ -1,6 +1,9 @@
 import pytest
-from . import factories
+
 from bbbs.common.choices import UserRoleChoices
+
+from . import factories
+
 
 @pytest.fixture
 def mentor():

@@ -1,5 +1,7 @@
-import pytest
 from django.urls import reverse
+
+import pytest
+
 from . import factories
 
 pytestmark = pytest.mark.django_db
