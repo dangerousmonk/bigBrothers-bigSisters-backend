@@ -17,7 +17,7 @@ class BookViewSet(ReadOnlyModelViewSet):
     serializer_class = BookSerializer
     permission_classes = [AllowAny]
     filter_backends = [DjangoFilterBackend]
-    filter_class = BookFilter
+    filterset_class = BookFilter
 
     @action(methods=['GET', ], detail=False,
             url_path='tags', url_name='book-tags')

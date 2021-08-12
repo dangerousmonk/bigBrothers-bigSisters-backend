@@ -22,10 +22,10 @@ class TestDiaryEndpoints:
 
     def test_get_diary_list(self, client, mentor_client):
         response = client.get(self.endpoint_list)
-        assert response.status_code == 401, 'for unauthorized clients must return 401'
+        assert response.status_code == 401
 
         response = mentor_client.get(self.endpoint_list)
-        assert response.status_code == 200, 'for authorized clients must return 200'
+        assert response.status_code == 200
 
     def test_get_diary_list_with_pagination(self, mentor, mentor_client):
         factories.DiaryFactory.create_batch(PAGE_SIZE + 1, author=mentor)

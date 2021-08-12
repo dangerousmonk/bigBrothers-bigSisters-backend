@@ -9,3 +9,4 @@ class CityViewSet(ReadOnlyModelViewSet):
     queryset = City.objects.all()
     serializer_class = CitySerializer
     permission_classes = [AllowAny]
+    pagination_class = None
