@@ -1,7 +1,8 @@
-from .models import Story
-from .serializers import StorySerializer
 from bbbs.common.mixins import ListRetrieveCreateUpdateMixin
 from bbbs.common.permissions import IsOwnerAdminModeratorOrReadOnly
+
+from .models import Story
+from .serializers import StorySerializer
 
 
 class StoryViewSet(ListRetrieveCreateUpdateMixin):

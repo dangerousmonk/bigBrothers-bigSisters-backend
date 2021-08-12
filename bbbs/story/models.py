@@ -13,7 +13,7 @@ class Story(models.Model):
         max_length=70,
         verbose_name=_('child name'),
     )
-    friends_since = models.DateTimeField(  # TODO: validation
+    friends_since = models.DateField(  # TODO: validation
         verbose_name=_('friends since'),
     )
     show_on_main = models.BooleanField(

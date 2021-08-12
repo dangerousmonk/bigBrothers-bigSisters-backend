@@ -1,17 +1,17 @@
-from .models import Diary
-from .serializers import DiarySerializer
-from rest_framework import viewsets
-from bbbs.common.permissions import IsOwnerAdminModeratorOrReadOnly
-from rest_framework.decorators import action
-from bbbs.users.serializers import EmailSerializer, BaseEmailSerializer
 from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext_lazy as _
-from bbbs.users.services import send_email
 
 from requests.exceptions import RequestException
+from rest_framework import permissions, status, viewsets
+from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework import status
-from rest_framework import permissions
+
+from bbbs.common.permissions import IsOwnerAdminModeratorOrReadOnly
+from bbbs.users.serializers import BaseEmailSerializer, EmailSerializer
+from bbbs.users.services import send_email
+
+from .models import Diary
+from .serializers import DiarySerializer
 
 
 class DiaryViewSet(viewsets.ModelViewSet):

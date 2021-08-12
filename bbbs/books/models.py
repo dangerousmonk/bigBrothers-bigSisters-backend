@@ -34,11 +34,6 @@ class Book(models.Model):
         verbose_name=_('book url'),
         help_text=_('link to read or buy book'),
     )
-    slug = models.SlugField(
-        max_length=200,
-        editable=False,
-        verbose_name=_('slug'),
-    )
     added_at = models.DateTimeField(auto_now_add=True, verbose_name=_('added_at'))
     tags = models.ManyToManyField(
         'common.Tag',

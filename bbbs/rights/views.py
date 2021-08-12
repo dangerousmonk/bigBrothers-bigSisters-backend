@@ -16,7 +16,7 @@ class RightViewSet(ReadOnlyModelViewSet):
     permission_classes = [AllowAny]
 
     @action(methods=['GET', ], detail=False,
-            url_path='tags', url_name='rights-tags')
+            url_path='tags', url_name='tags')
     def get_tags(self, request):
         tags = Tag.objects.filter(model='rights')
         serializer = TagSerializer(tags, many=True)

@@ -20,7 +20,7 @@ class BookViewSet(ReadOnlyModelViewSet):
     filterset_class = BookFilter
 
     @action(methods=['GET', ], detail=False,
-            url_path='tags', url_name='book-tags')
+            url_path='tags', url_name='tags')
     def get_tags(self, request):
         tags = Tag.objects.filter(model='books')
         serializer = TagSerializer(tags, many=True)
