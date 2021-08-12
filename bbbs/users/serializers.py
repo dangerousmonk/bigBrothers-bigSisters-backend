@@ -1,21 +1,23 @@
-from rest_framework import serializers
-from requests.exceptions import RequestException
 from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.contrib.sites.shortcuts import get_current_site
+from django.core import exceptions as django_exceptions
+from django.urls import reverse
+from django.utils.encoding import (DjangoUnicodeDecodeError, force_str,
+                                   smart_bytes)
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.timezone import now
 
-from django.core import exceptions as django_exceptions
-from bbbs.common.serializers import CitySerializer
-from django.contrib.auth.tokens import PasswordResetTokenGenerator
-from django.utils.encoding import force_str, smart_bytes, DjangoUnicodeDecodeError
-from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-from django.contrib.sites.shortcuts import get_current_site
-from django.urls import reverse
-from .services import send_email
-from rest_framework.response import Response
-from rest_framework import status
-from django.contrib.auth.password_validation import validate_password
+from requests.exceptions import RequestException
+from rest_framework import serializers, status
 from rest_framework.exceptions import ValidationError
-from django.contrib.auth import get_user_model
+from rest_framework.response import Response
+
+from bbbs.common.serializers import CitySerializer
+
+from .services import send_email
 
 User = get_user_model()
 

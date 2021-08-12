@@ -2,10 +2,11 @@
  -*- coding: utf-8 -*-
 Base settings for bbbs project.
 """
-from pathlib import Path
 import datetime
-import environ
 import os
+from pathlib import Path
+
+import environ
 
 env = environ.Env()
 environ.Env.read_env()

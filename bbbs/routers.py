@@ -3,11 +3,11 @@ from rest_framework.routers import DefaultRouter
 from bbbs.articles.views import ArticleViewSet
 from bbbs.books.views import BookViewSet
 from bbbs.common.views import CityViewSet
+from bbbs.diary.views import DiaryViewSet
 from bbbs.events.views import EventParticipantViewSet, EventViewSet
 from bbbs.questions.views import QuestionViewSet
 from bbbs.rights.views import RightViewSet
 from bbbs.story.views import StoryViewSet
-from bbbs.diary.views import DiaryViewSet
 
 v1_router = DefaultRouter()
 v1_router.register(r'afisha/events', EventViewSet, basename='events')

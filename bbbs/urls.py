@@ -4,8 +4,10 @@ from django.urls import path
 
 from rest_framework_simplejwt import views as jwt_views
 
+from bbbs.users.views import (PasswordResetCheck, ProfileViewSet,
+                              RequestPasswordReset, SetNewPasswordAPIView)
+
 from .routers import v1_router
-from bbbs.users.views import ProfileViewSet, RequestPasswordReset, PasswordResetCheck, SetNewPasswordAPIView
 
 urlpatterns = [
     path('api/v1/', include(v1_router.urls)),

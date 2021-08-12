@@ -1,6 +1,5 @@
 from settings.base import *  # noqa, pylint: disable=unused-wildcard-import
 
-
 DEBUG = True
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 DATABASES = {

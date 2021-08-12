@@ -1,8 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from .services import send_email
 from django.utils.translation import gettext_lazy as _
+
+from .services import send_email
 
 User = get_user_model()
 

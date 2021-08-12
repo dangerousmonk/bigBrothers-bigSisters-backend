@@ -1,15 +1,17 @@
-from .serializers import ProfileSerializer, EmailSerializer, SetNewPasswordSerializer
 from django.conf import settings
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.generics import RetrieveUpdateAPIView
-from rest_framework import generics
-from rest_framework.response import Response
-from rest_framework import status
-from django.utils.encoding import smart_str, DjangoUnicodeDecodeError
-from django.utils.http import urlsafe_base64_decode
-from django.shortcuts import get_object_or_404
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.shortcuts import get_object_or_404
+from django.utils.encoding import DjangoUnicodeDecodeError, smart_str
+from django.utils.http import urlsafe_base64_decode
+
+from rest_framework import generics, status
+from rest_framework.generics import RetrieveUpdateAPIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+
 from .models import CustomUser
+from .serializers import (EmailSerializer, ProfileSerializer,
+                          SetNewPasswordSerializer)
 
 
 class ProfileViewSet(RetrieveUpdateAPIView):

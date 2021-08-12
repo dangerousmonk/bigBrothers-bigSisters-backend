@@ -11,7 +11,7 @@ from .models import Book
 class BookAdmin(ModelAdmin):
     list_display = (
         'id', 'title', 'author', 'year', 'description', 'color',
-        'url', 'slug', 'added_at', 'get_tags',
+        'url', 'added_at', 'get_tags',
     )
     readonly_fields = []
 
