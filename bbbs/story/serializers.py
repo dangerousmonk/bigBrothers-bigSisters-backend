@@ -2,9 +2,12 @@ from rest_framework import serializers
 
 from .models import Story
 
+from bbbs.users.serializers import AuthorSerializer
+
 
 class StorySerializer(serializers.ModelSerializer):
     image = serializers.ImageField(allow_empty_file=False, use_url=False, required=False)
+    author = AuthorSerializer(read_only=True)
 
     class Meta:
         model = Story
@@ -14,10 +17,9 @@ class StorySerializer(serializers.ModelSerializer):
             'child_name',
             'friends_since',
             'author',
-            'story_added_at',
+            'added_at',
             'intro',
             'text',
             'quote',
             'image',
         ]
-        read_only_fields = ['author', 'story_added_at']

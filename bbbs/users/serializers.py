@@ -92,3 +92,14 @@ class SetNewPasswordSerializer(serializers.Serializer):
         except django_exceptions.ValidationError as e:
             raise serializers.ValidationError({'new_password': list(e.messages)})
         return super().validate(attrs)
+
+
+class AuthorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            'id',
+            'first_name',
+            'last_name',
+            'email',
+        ]
