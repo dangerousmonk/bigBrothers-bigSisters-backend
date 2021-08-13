@@ -2,7 +2,7 @@
 
 from django.db import migrations, models
 
-import bbbs.books.validators
+import bbbs.common.validators
 
 
 class Migration(migrations.Migration):
@@ -35,6 +35,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='book',
             name='year',
-            field=models.PositiveSmallIntegerField(help_text='add publication year', validators=[bbbs.books.validators.year_validator], verbose_name='publication year'),
+            field=models.PositiveSmallIntegerField(help_text='add publication year', validators=[bbbs.common.validators.year_validator], verbose_name='publication year'),
         ),
     ]

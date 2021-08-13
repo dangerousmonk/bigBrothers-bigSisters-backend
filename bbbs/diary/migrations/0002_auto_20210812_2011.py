@@ -2,7 +2,7 @@
 
 from django.db import migrations, models
 
-import bbbs.books.validators
+import bbbs.common.validators
 
 
 class Migration(migrations.Migration):
@@ -20,6 +20,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='diary',
             name='meeting_date',
-            field=models.DateField(validators=[bbbs.books.validators.diary_year_validator], verbose_name='meeting date'),
+            field=models.DateField(validators=[bbbs.common.validators.year_validator], verbose_name='meeting date'),
         ),
     ]

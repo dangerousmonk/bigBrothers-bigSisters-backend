@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from bbbs.common.validators import year_validator
 
 class Story(models.Model):
     title = models.CharField(
@@ -13,8 +14,9 @@ class Story(models.Model):
         max_length=70,
         verbose_name=_('child name'),
     )
-    friends_since = models.DateField(  # TODO: validation
+    friends_since = models.DateField(
         verbose_name=_('friends since'),
+        validators=[year_validator],
     )
     show_on_main = models.BooleanField(
         default=False,

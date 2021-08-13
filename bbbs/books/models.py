@@ -3,7 +3,7 @@ from django.utils.translation import gettext_lazy as _
 
 from bbbs.common.choices import BookColorChoices
 
-from .validators import year_validator
+from bbbs.common.validators import year_validator
 
 
 class Book(models.Model):

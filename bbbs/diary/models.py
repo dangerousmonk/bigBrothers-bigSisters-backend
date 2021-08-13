@@ -2,7 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from bbbs.books.validators import diary_year_validator
+from bbbs.common.validators import year_validator
 from bbbs.common.choices import DiaryMarkChoices
 
 
@@ -14,7 +14,7 @@ class Diary(models.Model):
     )
     meeting_date = models.DateField(
         verbose_name=_('meeting date'),
-        validators=[diary_year_validator,],
+        validators=[year_validator],
     )
     added_at = models.DateTimeField(auto_now_add=True, verbose_name=_('added at'))
     modified_at = models.DateTimeField(auto_now=True, verbose_name=_('modified at'))
