@@ -63,19 +63,19 @@ class TestDiaryEndpoints:
             'added_at': mentor_diary.added_at.strftime('%Y-%m-%dT%H:%M:%S%z'),
             'modified_at': mentor_diary.modified_at.strftime('%Y-%m-%dT%H:%M:%S%z'),
             'description': mentor_diary.description,
-            'image': None,  # TODO: test image
+            'image': mentor_diary.image,
             'sent_to_curator': mentor_diary.sent_to_curator,
             'mark': mentor_diary.mark,
         }
-        assert expected == data, 'must return correct data/data format'
+        assert expected == data
 
         response = client.get(url)
-        assert response.status_code == 401, 'must return 401 for unauthorized'
+        assert response.status_code == 401
 
         url = reverse('diaries-detail', kwargs={'pk': diary.id})
         response = mentor_client.get(url)
 
-        assert response.status_code == 404, 'must return 404 for not mentors diary'  # TODO: restrict via permissions?
+        assert response.status_code == 404  # TODO: restrict via permissions?
 
     def test_diary_post(self, mentor, mentor_client):
         num_diaries = Diary.objects.count()
@@ -96,6 +96,7 @@ class TestDiaryEndpoints:
         assert hasattr(created, 'author')
         assert created.author == mentor
 
+        # author-meeting_date-place must be unique
         expected['description'] = 'brand new description'
         response = mentor_client.post(url, data=expected, format='json')
         assert response.status_code == 400
@@ -132,17 +133,16 @@ class TestDiaryEndpoints:
     def test_diary_post_with_invalid_place(self, mentor_client, place):
         url = reverse('diaries-list')
         diary = factories.DiaryFactory.build()
-        expected = {
+        data = {
             'place': place,
             'meeting_date': diary.meeting_date.strftime('%Y-%m-%d'),
             'description': diary.description,
             'mark': diary.mark,
         }
 
-        response = mentor_client.post(url, data=expected, format='json')
+        response = mentor_client.post(url, data=data, format='json')
         assert response.status_code == 400
 
-    @pytest.mark.xfail
     def test_diary_update(self, mentor, mentor_client):
         old_diary = factories.DiaryFactory.create(author=mentor)
         new_diary = factories.DiaryFactory.build()
@@ -150,12 +150,12 @@ class TestDiaryEndpoints:
             'place': new_diary.place,
             'meeting_date': new_diary.meeting_date.strftime('%Y-%m-%d'),
             'description': new_diary.description,
-            'mark': new_diary.mark
+            'mark': new_diary.mark,
+            #'image': new_diary.image,
         }
 
         url = reverse('diaries-detail', kwargs={'pk': old_diary.id})
-        response = mentor_client.put(url, expected_json, format='json')
-
+        response = mentor_client.put(url, expected_json, format='multipart')
         expected_json['id'] = old_diary.id
         expected_json['sent_to_curator'] = old_diary.sent_to_curator
         expected_json['added_at'] = old_diary.added_at.strftime(
@@ -164,7 +164,6 @@ class TestDiaryEndpoints:
         expected_json['modified_at'] = old_diary.modified_at.strftime(
             '%Y-%m-%dT%H:%M:%S%z')
         expected_json['image'] = old_diary.image
-
         assert response.status_code == 200
         assert response.json() == expected_json
 

@@ -55,8 +55,7 @@ def test_stories_detail_endpoint_available(client, mentor):
     assert expected == response.json()
 
 
-
-def test_stories_create_endpoint(mentor, mentor_client):
+def test_stories_create_endpoint_valid_data(mentor, mentor_client):
     url = reverse('stories-list')
     num_stories = Story.objects.count()
     story = factories.StoryFactory.build()
@@ -69,11 +68,43 @@ def test_stories_create_endpoint(mentor, mentor_client):
         'quote': story.quote,
     }
     response = mentor_client.post(url, data=data, format='json')
+    created = Story.objects.first()
+
     assert response.status_code == 201
+    assert Story.objects.count() == num_stories + 1
+    assert hasattr(created, 'author')
+    assert created.author == mentor
 
 
+def test_stories_create_endpoint_no_data(mentor_client):
+    url = reverse('stories-list')
+    data = {}
+    response = mentor_client.post(url, data=data, format='json')
+    assert response.status_code == 400
+
+
+INVALID_SINCE_DATES = [
+    '',
+    '2029-01-01',
+    '01-01-2021',
+]
+
+
+@pytest.mark.parametrize('friends_since', INVALID_SINCE_DATES)
+def test_stories_create_endpoint_invalid_data(mentor_client, friends_since):
+    url = reverse('stories-list')
+    story = factories.StoryFactory.build()
+    data = {
+        'title': story.title,
+        'child_name': story.child_name,
+        'friends_since': friends_since,
+        'intro': story.intro,
+        'text': story.text,
+        'quote': story.quote,
+    }
+    response = mentor_client.post(url, data=data, format='json')
+    assert response.status_code == 400
 
 
 def test_stories_update_endpoint():
     pass
-
