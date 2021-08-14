@@ -12,7 +12,6 @@ def mentor():
     return mentor
 
 
-
 @pytest.fixture
 def token_for_mentor(mentor):
     from rest_framework_simplejwt.tokens import RefreshToken

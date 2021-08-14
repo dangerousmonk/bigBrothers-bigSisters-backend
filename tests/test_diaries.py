@@ -1,12 +1,3 @@
-# Test Case Description
-# Test endpoint is available only for authorized clients - DONE
-# Test list endpoint  returns paginated results - DONE
-# Test mentor can submit new diary via endpoint - DONE
-# Test mentor can update his diary - DONE
-# Test mentor can delete his own diary DONE
-# Test mentor can not delete another mentors diary - DONE
-# Test mentor can send his diary to curators
-
 from django.conf import settings
 from django.urls import reverse
 
@@ -155,7 +146,7 @@ class TestDiaryEndpoints:
         }
 
         url = reverse('diaries-detail', kwargs={'pk': old_diary.id})
-        response = mentor_client.put(url, expected_json, format='multipart')
+        response = mentor_client.put(url, expected_json, format='json')
         expected_json['id'] = old_diary.id
         expected_json['sent_to_curator'] = old_diary.sent_to_curator
         expected_json['added_at'] = old_diary.added_at.strftime(

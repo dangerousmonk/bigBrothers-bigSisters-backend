@@ -33,7 +33,7 @@ class DiaryFactory(factory.django.DjangoModelFactory):
     place = factory.Sequence(lambda n: f'place{n}')
     meeting_date = factory.Sequence(lambda n: date(2021, 7, 1) + timedelta(days=n))
     description = factory.Faker('text')
-    #image = factory.django.ImageField(width=1024, height=768)
+    # image = factory.django.ImageField(width=1024, height=768)
     mark = factory.LazyFunction(
         lambda: random.choice(
             [DiaryMarkChoices.BAD, DiaryMarkChoices.GOOD, DiaryMarkChoices.NEUTRAL]
@@ -98,7 +98,7 @@ class RightFactory(factory.django.DjangoModelFactory):
     description = factory.Sequence(lambda n: f'right description-{n}')
     text = factory.Faker('text')
     color = factory.LazyFunction(get_random_color)
-    #image = factory.django.ImageField(width=1024, height=768)
+    # image = factory.django.ImageField(width=1024, height=768)
 
     @factory.post_generation
     def tags(self, create, extracted, **kwargs):
@@ -117,18 +117,18 @@ class ArticleFactory(factory.django.DjangoModelFactory):
     author_info = factory.Sequence(lambda n: f'famous author-{n}')
     article_url = factory.Faker('url')
     content = factory.Faker('text')
-    #image = factory.django.ImageField(width=1024, height=768)
+    # image = factory.django.ImageField(width=1024, height=768)
 
 
 class StoryFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = 'story.Story'
 
-    title = factory.Sequence(lambda n: f'stroy title-{n}')
+    title = factory.Sequence(lambda n: f'story title-{n}')
     child_name = factory.Sequence(lambda n: f'Child-{n}')
     friends_since = factory.Sequence(lambda n: date(2021, 6, 1) + timedelta(days=n))
     author = factory.SubFactory(UserFactory)
     intro = factory.Sequence(lambda n: f'story intro-{n}')
     text = factory.Faker('text')
     quote = factory.Sequence(lambda n: f'story quote-{n}')
-    #image = factory.django.ImageField(width=1024, height=768)
+    image = factory.django.ImageField(width=1024, height=768)

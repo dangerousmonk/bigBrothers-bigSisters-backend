@@ -7,7 +7,7 @@ from bbbs.users.serializers import AuthorSerializer
 
 class StorySerializer(serializers.ModelSerializer):
     image = serializers.ImageField(allow_empty_file=False, use_url=False, required=False)
-    author = AuthorSerializer(read_only=True)
+    author = serializers.EmailField(read_only=True, source='author.email')
 
     class Meta:
         model = Story
