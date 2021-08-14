@@ -1,52 +1,62 @@
 from django.shortcuts import get_object_or_404
 
-from rest_framework import (generics, mixins, permissions, serializers, status,
-                            viewsets)
+from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
+from bbbs.common.mixins import ListRetreiveCreateDestroyMixin
+
+from .filters import EventFilter
 from .models import Event, EventParticipant
 from .serializers import EventParticipantSerializer, EventSerializer
 
 
 class EventViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = EventSerializer
-    permission_classes = [permissions.AllowAny] # TODO: Change back to only authenticated
-    #pagination_class = LimitOffsetPagination
-    #filterset_class = EventFilter
-
+    permission_classes = [permissions.IsAuthenticated]
+    filterset_class = EventFilter
 
     def get_queryset(self):
-        if self.request.user.is_authenticated:
-            user = self.request.user
-            return Event.event_objects.with_not_finished_for_user(user=user,city=user.city)
-        city = self.request.query_params.get('city')
-        return Event.event_objects.with_not_finished_for_guest(city=city)
+        user = self.request.user
+        return Event.event_objects.with_not_finished_for_user(
+            user=user, city=user.city
+        )
 
-    '''@action(methods=['GET', ], detail=False,
-            url_path='tags', url_name='tags')
-    def get_tags(self, request):
-        tags = Tag.objects.filter(model='event')
-        serializer = TagSerializer(tags, many=True)
-        return Response(serializer.data)'''
+    @action(methods=['GET', ], detail=False,
+            url_path='months', url_name='months')
+    def get_months(self, request):
+        user = request.user
+        dates = Event.event_objects.with_not_finished_for_user(
+            user=user, city=user.city
+        ).dates('start_at', 'month')
+        months = [date.month for date in dates]
+        return Response(months)
+
+    @action(methods=['GET', ], detail=False,
+            url_path='archive', url_name='archive')
+    def get_archive(self, request):
+        user = request.user
+        archived = Event.event_objects.with_finished_for_user(
+            user=user, city=user.city
+        )
+        serializer = EventSerializer(archived, many=True)
+        return Response(serializer.data)
 
 
-class EventParticipantViewSet(
-    mixins.CreateModelMixin,
-    mixins.ListModelMixin,
-    mixins.DestroyModelMixin,
-    viewsets.GenericViewSet
-):
+
+
+class EventParticipantViewSet(ListRetreiveCreateDestroyMixin):
     queryset = EventParticipant.objects.all()
     serializer_class = EventParticipantSerializer
-    #permission_classes = [permissions.IsAuthenticated]
-    #pagination_class = EventSetPagination
+
+    # permission_classes = [permissions.IsAuthenticated]
+    # pagination_class = EventSetPagination
 
     def get_queryset(self):
         return EventParticipant.objects.all()
-        #user = self.request.user
-        #queryset = EventParticipant.objects.filter(user=user)
-        #return queryset
+        # user = self.request.user
+        # queryset = EventParticipant.objects.filter(user=user)
+        # return queryset
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)

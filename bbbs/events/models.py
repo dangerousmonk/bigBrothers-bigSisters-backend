@@ -29,6 +29,17 @@ class EventsQuerySet(models.QuerySet):
         qs = qs.with_taken_seats()
         return qs.filter(city=city, end_at__gt=now())
 
+    def with_finished_for_user(self, user, city):
+        """
+        Return only events in users city that have ended
+        :param user: User instance
+        :param city: City instance
+        :return: Event queryset
+        """
+        qs = self.with_booked(user=user)
+        qs = qs.with_taken_seats()
+        return qs.filter(city=city, end_at__lt=now())
+
     def with_not_finished_for_guest(self, city):
         """
         Return only events in query_params city that haven't ended
@@ -63,8 +74,6 @@ class Event(models.Model):
     )
     objects = models.Manager()
     event_objects = EventsQuerySet.as_manager()
-
-    # TODO: need Tag?
 
     class Meta:
         verbose_name = _('Event')
@@ -115,7 +124,6 @@ class EventParticipant(models.Model):
         verbose_name=_('event'),
     )
     registered_at = models.DateTimeField(auto_now_add=True)
-    modified_at = models.DateTimeField(auto_now=True)  # TODO: is this needed?
 
     class Meta:
         verbose_name = _('Event participant')
