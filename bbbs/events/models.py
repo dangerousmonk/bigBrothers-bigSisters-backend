@@ -6,6 +6,8 @@ from django.db.models import Count, Exists, OuterRef
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 
+from bbbs.common.validators import event_seats_validator
+
 
 class EventsQuerySet(models.QuerySet):
 
@@ -72,6 +74,12 @@ class Event(models.Model):
         verbose_name=_('city'),
         related_name='events',
     )
+    tags = models.ManyToManyField(
+        'common.Tag',
+        related_name='events',
+        verbose_name=_('tags'),
+        help_text=_('tags appropriate for this event'),
+    )
     objects = models.Manager()
     event_objects = EventsQuerySet.as_manager()
 
@@ -86,7 +94,7 @@ class Event(models.Model):
         ]
 
     def __str__(self):
-        return self.title  # TODO: not only title
+        return self.title
 
     def clean(self):
 
@@ -110,6 +118,18 @@ class Event(models.Model):
         return super().save(*args, **kwargs)
 
 
+class EventParticipantQuerySet(models.QuerySet):
+    def not_finished_for_user(self, user):
+        """
+        Return only users registrations that haven't ended
+        :param user: User instance
+        :return: EventParticipant queryset
+        """
+        return self.select_related('event').filter(
+            user=user, event__end_at__gt=now()
+        )
+
+
 class EventParticipant(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -121,14 +141,20 @@ class EventParticipant(models.Model):
         Event,
         on_delete=models.CASCADE,
         related_name='participants',
+        validators=[event_seats_validator],
         verbose_name=_('event'),
     )
-    registered_at = models.DateTimeField(auto_now_add=True)
+    registered_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name=_('registration date'),
+    )
+    objects = models.Manager()
+    participants_objects = EventParticipantQuerySet.as_manager()
 
     class Meta:
         verbose_name = _('Event participant')
         verbose_name_plural = _('Event participants')
-        ordering = ['event', '-registered_at']
+        ordering = ['event__start_at', '-registered_at']
         constraints = [
             models.UniqueConstraint(
                 fields=['user', 'event'], name='unique-participant'

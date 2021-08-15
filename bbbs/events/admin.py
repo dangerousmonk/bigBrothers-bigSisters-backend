@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.contrib.admin import ModelAdmin, register, site
 
+from bbbs.common.models import Tag
+
 from .models import Event, EventParticipant
 
 admin.site.register(EventParticipant)
@@ -24,10 +26,10 @@ class EventAdmin(ModelAdmin):
             return queryset.filter(city=request.user.city)
         return queryset
 
-    #def formfield_for_manytomany(self, db_field, request, **kwargs):
-    #    if db_field.name == 'tags':
-    #        kwargs['queryset'] = Tag.objects.filter(model='event')
-    #    return super().formfield_for_manytomany(db_field, request, **kwargs)
+    def formfield_for_manytomany(self, db_field, request, **kwargs):
+        if db_field.name == 'tags':
+            kwargs['queryset'] = Tag.objects.filter(model='events')
+        return super().formfield_for_manytomany(db_field, request, **kwargs)
 
     def has_module_permission(self, request):
         return not request.user.is_anonymous

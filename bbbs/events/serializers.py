@@ -2,26 +2,31 @@ from django.utils.translation import gettext_lazy as _
 
 from rest_framework import serializers
 
+from bbbs.common.serializers import TagSerializer
+
 from .models import Event, EventParticipant
 
 
 class EventSerializer(serializers.ModelSerializer):
     taken_seats = serializers.IntegerField(read_only=True)
     booked = serializers.BooleanField(read_only=True)
+    tags = TagSerializer(many=True,read_only=True)
 
     class Meta:
         model = Event
         fields = [
+            'id',
             'address',
             'contact',
             'title',
             'description',
             'start_at',
             'end_at',
-            'seats',
+            'seats', # TODO: remove
             'taken_seats',
             'booked',
-            'city'
+            'city', # TODO: remove
+            'tags'
         ]
 
 

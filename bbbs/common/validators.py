@@ -10,3 +10,11 @@ def year_validator(value):
             _('%(value)s - invalid date, can not be in the future'),
             params={'value': value},
         )
+
+
+def event_seats_validator(value):
+    if value.participants.count() >= value.seats:
+        raise ValidationError(
+            _('%(value)s - No free seats available'),
+            params={'value': value},
+        )
