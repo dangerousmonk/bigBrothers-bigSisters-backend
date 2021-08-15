@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -47,8 +48,6 @@ class Place(models.Model):
         verbose_name=_('gender'),
     )
     age = models.PositiveSmallIntegerField(
-        blank=True,
-        null=True,
         validators=[MinValueValidator(1), MaxValueValidator(18)],
         verbose_name=_('age'),
     )
@@ -83,11 +82,21 @@ class Place(models.Model):
         auto_now_add=True,
         verbose_name=_('publication date')
     )
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='places',
+        verbose_name=_('author'),
+
+    )
 
     class Meta:
         ordering = ['-pub_date']
         verbose_name = _('Place - where to go?')
         verbose_name_plural = _('Places - where to go?')
+        indexes = [
+            models.Index(fields=['city', 'verified'])
+        ]
 
     def __str__(self):
         return self.title

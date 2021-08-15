@@ -45,6 +45,7 @@ class EventViewSet(viewsets.ReadOnlyModelViewSet):
         serializer = self.get_serializer(archived, many=True)
         return Response(serializer.data)
 
+
 class EventParticipantViewSet(ListRetreiveCreateDestroyMixin):
     serializer_class = EventParticipantSerializer
     permission_classes = [IsUserParticipant]

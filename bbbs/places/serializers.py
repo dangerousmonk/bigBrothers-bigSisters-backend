@@ -1,17 +1,9 @@
 from rest_framework import serializers
 
+from bbbs.common.serializers import TagSerializer
+
 from .models import Place
-
-
-class InfoField(serializers.Field):
-    def to_representation(self, place):
-        display = ''
-        if place.gender:
-            display += place.get_gender(place.gender) + ', '
-        display += str(place.age) + ' лет. '
-        display += place.get_activity_type(place.activity_type) + ' отдых'
-        return display
-
+from .fields import InfoField
 
 class PlaceReadSerializer(serializers.ModelSerializer):
     info = InfoField(source='*')
@@ -27,7 +19,7 @@ class PlaceReadSerializer(serializers.ModelSerializer):
             'address',
             'description',
             'link',
-            'imageUrl',
+            'image_url',
             'city',
             #'tags'
         ]
@@ -35,9 +27,9 @@ class PlaceReadSerializer(serializers.ModelSerializer):
 
 class PlaceWriteSerializer(serializers.ModelSerializer):
     info = InfoField(source='*', read_only=True)
-    imageUrl = serializers.ImageField(read_only=True)
-    id = serializers.IntegerField(read_only=True)
+    image_url = serializers.ImageField(read_only=True)
     chosen = serializers.BooleanField(read_only=True)
+    tags = TagSerializer(many=True, required=False)
 
     class Meta:
         model = Place
@@ -52,7 +44,6 @@ class PlaceWriteSerializer(serializers.ModelSerializer):
             'address',
             'description',
             'link',
-            'imageUrl',
-            'city',
-            #'tags'
+            'image_url',
+            'tags'
         ]

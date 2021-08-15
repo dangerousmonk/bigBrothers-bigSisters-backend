@@ -117,6 +117,9 @@ class Event(models.Model):
         self.full_clean()
         return super().save(*args, **kwargs)
 
+    def list_tags(self):
+        return self.tags.values_list('name', flat=True)
+
 
 class EventParticipantQuerySet(models.QuerySet):
     def not_finished_for_user(self, user):
