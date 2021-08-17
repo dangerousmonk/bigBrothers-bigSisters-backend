@@ -41,6 +41,7 @@ PROJECT_APPS = [
     'bbbs.questions',
     'bbbs.story',
     'bbbs.diary',
+    'bbbs.videos',
 ]
 
 THIRD_PARTY_APPS = [
