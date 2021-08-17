@@ -1,15 +1,18 @@
-from bbbs.common.mixins import ListRetrieveCreateUpdateMixin
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
+from bbbs.common.mixins import ListRetrieveCreateUpdateMixin
+from bbbs.common.permissions import IsOwnerAdminModeratorOrReadOnly
+
 from .filters import PlaceFilter
 from .models import Place
-from .serializers import PlaceReadSerializer, PlaceWriteSerializer
+from .serializers import PlaceSerializer
 
 
 class PlaceViewSet(ListRetrieveCreateUpdateMixin):
-    serializer_class = PlaceWriteSerializer
+    serializer_class = PlaceSerializer
     filterset_class = PlaceFilter
+    permission_classes = [IsOwnerAdminModeratorOrReadOnly]
 
     def get_queryset(self):
         qs = Place.objects.exclude(verified=False)

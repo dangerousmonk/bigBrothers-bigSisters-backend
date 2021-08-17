@@ -98,6 +98,7 @@ class RightFactory(factory.django.DjangoModelFactory):
     description = factory.Sequence(lambda n: f'right description-{n}')
     text = factory.Faker('text')
     color = factory.LazyFunction(get_random_color)
+
     # image = factory.django.ImageField(width=1024, height=768)
 
     @factory.post_generation
@@ -132,3 +133,18 @@ class StoryFactory(factory.django.DjangoModelFactory):
     text = factory.Faker('text')
     quote = factory.Sequence(lambda n: f'story quote-{n}')
     image = factory.django.ImageField(width=1024, height=768)
+
+
+class EventFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = 'events.Event'
+
+    address = ()
+    contact = ()
+    title = ()
+    description = ()
+    start_at = ()
+    end_at = ()
+    seats = ()
+    city = ()
+    tags = ()

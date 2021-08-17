@@ -2,7 +2,35 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from ..utils import unique_slugify
-from .choices import TagChoices
+from .choices import RegionISOCodeChoices, TagChoices
+
+
+class Region(models.Model):
+    name = models.CharField(
+        max_length=150,
+        verbose_name=_('name'),
+        unique=True,
+    )
+    code_iso_3166 = models.CharField(
+        max_length=20,
+        choices=RegionISOCodeChoices.CHOICES,
+        verbose_name=_('iso code choices'),
+    )
+    timezone = models.CharField(
+        max_length=20,
+        null=True,
+        blank=True,
+        default='',
+        verbose_name=_('timezone')
+    )
+
+    class Meta:
+        verbose_name = _('Region')
+        verbose_name_plural = _('Regions')
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name
 
 
 class City(models.Model):
@@ -14,6 +42,14 @@ class City(models.Model):
     is_primary = models.BooleanField(
         default=False,
         verbose_name=_('primary city'),
+    )
+    region = models.ForeignKey(
+        'Region',
+        related_name='cities',
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        verbose_name=_('region'),
     )
 
     class Meta:

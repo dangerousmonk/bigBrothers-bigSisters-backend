@@ -18,9 +18,6 @@ class EventAdmin(ModelAdmin):
     ordering = ('-pub_date',)
     empty_value_display = _('-empty-')
 
-    def taken_seats(self, obj):
-        return obj.taken_seats
-
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)

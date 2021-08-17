@@ -81,3 +81,31 @@ class DiaryMarkChoices:
         (BAD, _('bad')),
         (NEUTRAL, _('neutral')),
     ]
+
+
+class RegionISOCodeChoices:
+    MOSCOW = 'RU-MOW'
+    MOSCOW_REGION = 'RU-MOS'
+    SAINT_PETERSBURG = 'RU-SPE'
+    LENINGRADSKAYA = 'RU-LEN'
+    TVERSKAYA = 'RU-TVE'
+    SVERDLOVSKAYA = 'RU-SVE'
+    TYUMENSKAYA = 'RU-TYU'
+    KOSTROMSKAYA = 'RU-KOS'
+    BASHKARSTAN = 'RU-BA'
+    YARASLAVSKOYA = 'RU-YAR'
+    RYAZANSKAYA = 'RU-RYA'
+
+    CHOICES = [
+        (MOSCOW, _('Moscow')),
+        (MOSCOW_REGION, _('Moskovskaya oblast')),
+        (SAINT_PETERSBURG, _('Saint Petersburg')),
+        (LENINGRADSKAYA, _('Leningradskaya oblast')),
+        (TVERSKAYA, _('Tverskaya oblast')),
+        (SVERDLOVSKAYA, _('Sverdlovskaya oblast')),
+        (TYUMENSKAYA, _('Tyuemenskaya oblast')),
+        (KOSTROMSKAYA, _('Kostromskaya oblast')),
+        (BASHKARSTAN, _('Bashkarstan republic')),
+        (YARASLAVSKOYA, _('Yaroslavskaya oblast')),
+        (RYAZANSKAYA, _('Ryazanskaya oblast')),
+    ]
