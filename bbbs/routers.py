@@ -9,7 +9,7 @@ from bbbs.places.views import PlaceViewSet
 from bbbs.questions.views import QuestionViewSet
 from bbbs.rights.views import RightViewSet
 from bbbs.story.views import StoryViewSet
-from bbbs.videos.views import VideoViewSet
+from bbbs.videos.views import VideoViewSet, MovieViewSet
 
 v1_router = DefaultRouter()
 v1_router.register(r'afisha/events', EventViewSet, basename='events')
@@ -23,4 +23,5 @@ v1_router.register(r'stories', StoryViewSet, basename='stories')
 v1_router.register(r'profile/diaries', DiaryViewSet, basename='diaries')
 v1_router.register(r'places', PlaceViewSet, basename='places')
 v1_router.register(r'videos', VideoViewSet, basename='videos')
+v1_router.register(r'movies', MovieViewSet, basename='movies')
 
