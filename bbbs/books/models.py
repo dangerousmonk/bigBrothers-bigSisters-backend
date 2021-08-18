@@ -34,11 +34,14 @@ class Book(models.Model):
         verbose_name=_('book url'),
         help_text=_('link to read or buy book'),
     )
-    added_at = models.DateTimeField(auto_now_add=True, verbose_name=_('added_at'))
+    added_at = models.DateTimeField(
+        auto_now_add=True, verbose_name=_('added_at')
+    )
     tags = models.ManyToManyField(
         'common.Tag',
         related_name='books',
         verbose_name=_('tags'),
+        blank=True,
         help_text=_('tags appropriate for this book'),
     )
 

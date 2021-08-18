@@ -2,7 +2,9 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from bbbs.common.mixins import ListRetrieveCreateUpdateMixin
+from bbbs.common.models import Tag
 from bbbs.common.permissions import IsOwnerAdminModeratorOrReadOnly
+from bbbs.common.serializers import TagSerializer
 
 from .filters import PlaceFilter
 from .models import Place
@@ -36,5 +38,12 @@ class PlaceViewSet(ListRetrieveCreateUpdateMixin):
     def get_chosen(self, request):
         chosen_place = self.get_queryset().order_by('-chosen').first()
         serializer = self.get_serializer(chosen_place)
+        return Response(serializer.data)
+
+    @action(methods=['GET', ], detail=False,
+            url_path='tags', url_name='tags')
+    def get_tags(self, request):
+        tags = Tag.objects.filter(model='places')
+        serializer = TagSerializer(tags, many=True)
         return Response(serializer.data)
 

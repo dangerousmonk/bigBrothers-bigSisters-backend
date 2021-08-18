@@ -35,7 +35,8 @@ class Video(models.Model):
     tags = models.ManyToManyField(
         'common.Tag',
         verbose_name=_('tags'),
-        related_name='videos', # TODO: blank=True
+        related_name='videos',
+        blank=True,
     )
     show_on_main = models.BooleanField(
         verbose_name=_('show on main page'),
@@ -50,6 +51,9 @@ class Video(models.Model):
 
     def __str__(self):
         return self.title
+
+    def list_tags(self):
+        return self.tags.values_list('name', flat=True)
 
 
 class Movie(models.Model):
@@ -90,7 +94,7 @@ class Movie(models.Model):
         null=True,
     )
     show_on_main = models.BooleanField(
-        default=True,
+        default=False,
         verbose_name=_('show on main page'),
         help_text=_('choose to display on the main page'),
     )
@@ -102,3 +106,6 @@ class Movie(models.Model):
 
     def __str__(self):
         return self.title
+
+    def list_tags(self):
+        return self.tags.values_list('name', flat=True)

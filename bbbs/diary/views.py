@@ -7,7 +7,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from bbbs.common.permissions import IsOwnerAdminModeratorOrReadOnly
-from bbbs.users.serializers import BaseEmailSerializer, EmailSerializer
+from bbbs.users.serializers import EmailSerializer
 from bbbs.users.services import send_email
 
 from .models import Diary

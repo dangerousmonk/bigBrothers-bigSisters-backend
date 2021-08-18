@@ -139,12 +139,19 @@ class EventFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = 'events.Event'
 
-    address = ()
-    contact = ()
-    title = ()
-    description = ()
+    address = factory.Sequence(lambda n: f'street-{n}')
+    contact = factory.Sequence(lambda n: f'contact name-{n}')
+    title = factory.Sequence(lambda n: f'title-{n}')
+    description = factory.Faker('text')
     start_at = ()
     end_at = ()
-    seats = ()
-    city = ()
-    tags = ()
+    seats = factory.LazyAttribute(random.randrange(1, 5))
+    city = factory.SubFactory(CityFactory)
+
+    @factory.post_generation
+    def tags(self, create, extracted, **kwargs):
+        if not create:
+            return
+        if extracted:
+            for tag in extracted:
+                self.tags.add(tag)

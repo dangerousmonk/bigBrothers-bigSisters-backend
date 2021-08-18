@@ -49,7 +49,7 @@ class EventsQuerySet(models.QuerySet):
         :return: Event queryset
         """
         qs = self.with_taken_seats()
-        return qs.filter(city=city, end_at__gt=now())
+        return qs.filter(city=city, end_at__gt=now()) #TODO: events only for authorized
 
 
 class Event(models.Model):
@@ -78,6 +78,7 @@ class Event(models.Model):
         'common.Tag',
         related_name='events',
         verbose_name=_('tags'),
+        blank=True,
         help_text=_('tags appropriate for this event'),
     )
     objects = models.Manager()

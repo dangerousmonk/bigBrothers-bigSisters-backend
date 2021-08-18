@@ -29,7 +29,10 @@ class Article(models.Model):
         verbose_name=_('show on main page'),
         help_text=_('choose to display on the home page')
     )
-    added_at = models.DateTimeField(auto_now_add=True, verbose_name=_('added at'))
+    added_at = models.DateTimeField\
+        (auto_now_add=True,
+         verbose_name=_('added at')
+         )
 
     class Meta:
         verbose_name = _('Article')

@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 class Question(models.Model):
-    question = models.CharField(          # TODO: unique question?
+    question = models.CharField(
         max_length=255,
         verbose_name=_('question'),
     )

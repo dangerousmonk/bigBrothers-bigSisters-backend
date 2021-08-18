@@ -16,8 +16,14 @@ class Diary(models.Model):
         verbose_name=_('meeting date'),
         validators=[year_validator],
     )
-    added_at = models.DateTimeField(auto_now_add=True, verbose_name=_('added at'))
-    modified_at = models.DateTimeField(auto_now=True, verbose_name=_('modified at'))
+    added_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name=_('added at')
+    )
+    modified_at = models.DateTimeField(
+        auto_now=True,
+        verbose_name=_('modified at')
+    )
     description = models.TextField(
         verbose_name=_('description'),
         help_text=_('Describe your experience, what you liked/disliked')

@@ -18,7 +18,7 @@ class Right(models.Model):
     )
     color = models.CharField(
         max_length=7,
-        choices=RightColorChoices.CHOICES,  # TODO: help text ?
+        choices=RightColorChoices.CHOICES,
         verbose_name=_('color'),
     )
     image = models.ImageField(
@@ -30,6 +30,7 @@ class Right(models.Model):
     tags = models.ManyToManyField(
         'common.Tag',
         related_name='rights',
+        blank=True,
         verbose_name=_('tags')
     )
     added_at = models.DateTimeField(
