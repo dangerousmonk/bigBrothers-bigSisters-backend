@@ -54,6 +54,14 @@ class CustomUser(AbstractUser):
         verbose_name=_('curator'),
         help_text=_('choose curator if new user is mentor'),
     )
+    '''region = models.ForeignKey(
+        'common.Region',
+        related_name='users',
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        verbose_name=_('region'),
+    )'''
     date_joined = models.DateTimeField(default=timezone.now, editable=False)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', 'first_name', 'last_name', 'gender']
@@ -84,7 +92,7 @@ class CustomUser(AbstractUser):
 
     @property
     def is_admin(self):
-        return self.role == UserRoleChoices.ADMIN  # TODO: or superuser when created via console
+        return self.role == UserRoleChoices.ADMIN or self.is_superuser
 
     @property
     def is_moderator(self):

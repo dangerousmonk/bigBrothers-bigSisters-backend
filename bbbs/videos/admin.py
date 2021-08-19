@@ -2,12 +2,13 @@ from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
 from bbbs.common.mixins import TagAdminMixin
+from bbbs.common.permissions import BaseStaffAdminPermission
 
 from .models import Movie, Video
 
 
 @admin.register(Video)
-class VideoAdmin(TagAdminMixin):
+class VideoAdmin(BaseStaffAdminPermission, TagAdminMixin):
     list_display = ('id', 'added_at', 'title',
                     'get_description', 'duration_in_seconds', 'get_tags',
                     'show_on_main', 'link', 'image')

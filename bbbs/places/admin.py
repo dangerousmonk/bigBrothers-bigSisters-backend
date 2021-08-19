@@ -2,12 +2,17 @@ from django.contrib.admin import register
 from django.utils.translation import gettext_lazy as _
 
 from bbbs.common.mixins import RegModeratorAdminMixin, TagAdminMixin
+from bbbs.common.permissions import BaseStaffAdminPermission
 
 from .models import Place
 
 
 @register(Place)
-class EventAdmin(TagAdminMixin, RegModeratorAdminMixin):
+class EventAdmin(
+    BaseStaffAdminPermission,
+    TagAdminMixin,
+    RegModeratorAdminMixin
+):
     list_display = ('id', 'title', 'address', 'city',
                     'gender', 'age', 'activity_type',
                     'pub_date', 'author',

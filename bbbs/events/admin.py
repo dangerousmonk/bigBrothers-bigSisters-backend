@@ -5,13 +5,14 @@ from .models import Event, EventParticipant
 
 admin.site.register(EventParticipant)
 from bbbs.common.mixins import RegModeratorAdminMixin, TagAdminMixin
+from bbbs.common.permissions import BaseStaffAdminPermission
 
 
 @register(Event)
-class EventAdmin(TagAdminMixin, RegModeratorAdminMixin):
+class EventAdmin(BaseStaffAdminPermission, TagAdminMixin, RegModeratorAdminMixin):
     list_display = (
         'city', 'title', 'start_at',
-        'end_at', 'seats', 'taken_seats'
+        'end_at', 'seats', 'taken_seats',
     )
     search_fields = ('title', 'city', 'start_at', 'end_at')
     list_filter = ('title', 'city', 'start_at', 'end_at')
@@ -19,4 +20,4 @@ class EventAdmin(TagAdminMixin, RegModeratorAdminMixin):
     empty_value_display = '-пусто-'
 
     def taken_seats(self, obj):
-        return obj.taken_seats
+        return obj.participants.count()

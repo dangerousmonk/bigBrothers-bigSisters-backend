@@ -47,7 +47,6 @@ class City(models.Model):
         'Region',
         related_name='cities',
         on_delete=models.SET_NULL,
-        blank=True,
         null=True,
         verbose_name=_('region'),
     )

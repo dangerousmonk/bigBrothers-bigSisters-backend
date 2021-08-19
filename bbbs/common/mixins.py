@@ -1,10 +1,10 @@
+from django.contrib import admin
+from django.contrib.admin import ModelAdmin
+from django.utils.translation import gettext_lazy as _
+
 from rest_framework import mixins, viewsets
 
-from django.utils.translation import gettext_lazy as _
-from django.contrib.admin import ModelAdmin
-
-from django.contrib import admin
-from .models import Tag
+from .models import City, Tag
 
 
 class ListRetrieveCreateUpdateMixin(
@@ -28,7 +28,6 @@ class ListRetreiveCreateDestroyMixin(
 
 
 class TagAdminMixin(ModelAdmin):
-
     def formfield_for_manytomany(self, db_field, request, **kwargs):
         if db_field.name == 'tags':
             model_plural = self.model._meta.verbose_name_plural.lower()
@@ -43,31 +42,16 @@ class TagAdminMixin(ModelAdmin):
 
 
 class RegModeratorAdminMixin(ModelAdmin):
+    # Allow region moderator to see and add instances related to his city region
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         if request.user.is_moderator_reg:
-            return qs.filter(city=request.user.city)
+            region_cities = request.user.city.region.cities.all()
+            return qs.filter(city__in=region_cities)
         return qs
 
-    def has_module_permission(self, request):
-        return not request.user.is_anonymous
-
-    def has_view_permission(self, request, obj=None):
-        return not request.user.is_anonymous
-
-    def has_add_permission(self, request):
-        return not request.user.is_anonymous
-
-    def has_change_permission(self, request, obj=None):
-        return not request.user.is_anonymous
-
-    def has_delete_permission(self, request, obj=None):
-        return not request.user.is_anonymous
-
-    def get_form(self, request, obj=None, **kwargs):
-        form = super().get_form(request, obj, **kwargs)
-        if request.user.is_moderator_reg:
-            form.base_fields['city'].initial = request.user.city
-            form.base_fields['city'].disabled = True
-            form.base_fields['city'].help_text = _('Can add only in your city')
-        return form
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'city' and request.user.is_moderator_reg:
+            kwargs['queryset'] = City.objects.filter(region=request.user.city.region)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)

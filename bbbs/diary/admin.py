@@ -1,11 +1,13 @@
-from django.contrib.admin import ModelAdmin, register
+from django.contrib.admin import register
 from django.utils.translation import gettext_lazy as _
+
+from bbbs.common.permissions import BaseStaffAdminPermission
 
 from .models import Diary
 
 
 @register(Diary)
-class DiaryAdmin(ModelAdmin):
+class DiaryAdmin(BaseStaffAdminPermission):
     list_display = (
         'place', 'meeting_date', 'added_at', 'modified_at',
         'description', 'image', 'sent_to_curator', 'mark', 'author'
