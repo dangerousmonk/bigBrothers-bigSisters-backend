@@ -1,15 +1,14 @@
 from django.contrib import admin
-from django.contrib.admin import ModelAdmin
 from django.utils.translation import gettext_lazy as _
 
-from bbbs.common.models import Tag
+from bbbs.common.mixins import TagAdminMixin
 
 from .models import Right
 
 
 @admin.register(Right)
-class RightAdmin(ModelAdmin):
-    list_display = ('id', 'title', 'get_description')
+class RightAdmin(TagAdminMixin):
+    list_display = ('id', 'title', 'get_description', 'get_tags')
     search_fields = ('title', 'description', 'text')
     list_filter = ('tags','color',)
 
@@ -19,9 +18,4 @@ class RightAdmin(ModelAdmin):
         if description is not None:
             return f'{description[:30]}...'
         return description
-
-    def formfield_for_manytomany(self, db_field, request, **kwargs):
-        if db_field.name == 'tags':
-            kwargs['queryset'] = Tag.objects.filter(model='rights')
-        return super().formfield_for_manytomany(db_field, request, **kwargs)
 

@@ -30,7 +30,7 @@ class Question(models.Model):
         'common.Tag',
         related_name='questions',
         blank=True,
-        verbose_name=_('questions'),
+        verbose_name=_('tags'),
     )
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -49,4 +49,4 @@ class Question(models.Model):
         return self.question[:30]
 
     def list_tags(self):
-        return self.tags.values_list('name')
+        return self.tags.values_list('name', flat=True)

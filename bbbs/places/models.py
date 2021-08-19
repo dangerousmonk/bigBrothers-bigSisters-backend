@@ -92,8 +92,8 @@ class Place(models.Model):
 
     class Meta:
         ordering = ['-pub_date']
-        verbose_name = _('Place - where to go?')
-        verbose_name_plural = _('Places - where to go?')
+        verbose_name = _('Place')
+        verbose_name_plural = _('Places')
         indexes = [
             models.Index(fields=['city', 'verified'])
         ]

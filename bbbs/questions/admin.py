@@ -1,5 +1,19 @@
-from django.contrib import admin
+from django.contrib.admin import register
+from django.utils.translation import gettext_lazy as _
+
+from bbbs.common.mixins import TagAdminMixin
 
 from .models import Question
 
-admin.site.register(Question)
+
+@register(Question)
+class QuestionAdmin(TagAdminMixin):
+    list_display = (
+        'id', 'question', 'answer', 'added_at', 'modified_at', 'show_on_main',
+        'get_tags',
+        'author'
+    )
+    search_fields = ('question', 'answer', 'added_at')
+    list_filter = ('author', 'show_on_main', 'added_at')
+    ordering = ('-added_at',)
+    empty_value_display = _('empty')

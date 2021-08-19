@@ -5,4 +5,4 @@ from django.utils.translation import gettext_lazy as _
 class RightsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'bbbs.rights'
-    verbose_name = _('Questions')
+    verbose_name = _('Rights')
