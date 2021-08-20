@@ -30,7 +30,7 @@ class EventViewSet(viewsets.ReadOnlyModelViewSet):
         dates = Event.event_objects.with_not_finished_for_user(
             user=user, city=user.city
         ).dates('start_at', 'month')
-        months = [date.month for date in dates]
+        months = [date.strftime('%B') for date in dates]
         return Response(months)
 
     @action(methods=['GET', ], detail=False,
@@ -45,13 +45,6 @@ class EventViewSet(viewsets.ReadOnlyModelViewSet):
             serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
         serializer = self.get_serializer(archived, many=True)
-        return Response(serializer.data)
-
-    @action(methods=['GET', ], detail=False,
-            url_path='tags', url_name='tags')
-    def get_tags(self, request):
-        tags = Tag.objects.filter(model='events')
-        serializer = TagSerializer(tags, many=True)
         return Response(serializer.data)
 
 

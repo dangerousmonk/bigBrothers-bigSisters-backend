@@ -146,7 +146,7 @@ class EventFactory(factory.django.DjangoModelFactory):
     title = factory.Sequence(lambda n: f'title-{n}')
     description = factory.Faker('text')
     start_at = datetime.now(tz=pytz.UTC) + timedelta(days=1)
-    end_at = factory.LazyAttribute(lambda obj: obj.start_at + timedelta(hours=random.randrange(1, 10)))
+    end_at = factory.LazyAttribute(lambda obj: obj.start_at + timedelta(hours=random.randrange(3, 10)))
     seats = factory.LazyFunction(lambda: random.randrange(2, 10))
     city = factory.SubFactory(CityFactory)
 

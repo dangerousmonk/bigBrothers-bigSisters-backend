@@ -22,10 +22,8 @@ class EventSerializer(serializers.ModelSerializer):
             'description',
             'start_at',
             'end_at',
-            'seats', # TODO: remove
             'taken_seats',
             'booked',
-            'city', # TODO: remove
             'tags'
         ]
 
