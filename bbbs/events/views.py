@@ -3,6 +3,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from bbbs.common.mixins import ListRetreiveCreateDestroyMixin
+from bbbs.common.models import Tag
+from bbbs.common.serializers import TagSerializer
 
 from .filters import EventFilter
 from .models import Event, EventParticipant
@@ -43,6 +45,13 @@ class EventViewSet(viewsets.ReadOnlyModelViewSet):
             serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
         serializer = self.get_serializer(archived, many=True)
+        return Response(serializer.data)
+
+    @action(methods=['GET', ], detail=False,
+            url_path='tags', url_name='tags')
+    def get_tags(self, request):
+        tags = Tag.objects.filter(model='events')
+        serializer = TagSerializer(tags, many=True)
         return Response(serializer.data)
 
 

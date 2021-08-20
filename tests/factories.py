@@ -1,13 +1,23 @@
 import random
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 
 from django.conf import settings
 
 import factory
+import pytz
 
 from bbbs.common.choices import (BookColorChoices, DiaryMarkChoices,
                                  RightColorChoices, UserGenderChoices,
                                  UserRoleChoices)
+
+DEFAULT_DB_ALIAS = 'default'
+
+class CityFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = 'common.City'
+
+    name = factory.Sequence(lambda n: f'city-{n}')
+    is_primary = factory.LazyFunction(lambda: random.choice([True, False]))
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -22,7 +32,7 @@ class UserFactory(factory.django.DjangoModelFactory):
     last_name = factory.Sequence(lambda n: f'Doe{n}')
     role = factory.Iterator([UserRoleChoices.CURATOR, UserRoleChoices.MODERATOR])
     gender = factory.Iterator([UserGenderChoices.MALE, UserGenderChoices.FEMALE])
-
+    city = factory.SubFactory(CityFactory)
     # TODO: make password hashed?
 
 
@@ -75,14 +85,6 @@ class BookFactory(factory.django.DjangoModelFactory):
         if extracted:
             for tag in extracted:
                 self.tags.add(tag)
-
-
-class CityFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = 'common.City'
-
-    name = factory.Sequence(lambda n: f'city-{n}')
-    is_primary = factory.LazyFunction(lambda: random.choice([True, False]))
 
 
 def get_random_color():
@@ -143,9 +145,9 @@ class EventFactory(factory.django.DjangoModelFactory):
     contact = factory.Sequence(lambda n: f'contact name-{n}')
     title = factory.Sequence(lambda n: f'title-{n}')
     description = factory.Faker('text')
-    start_at = ()
-    end_at = ()
-    seats = factory.LazyAttribute(random.randrange(1, 5))
+    start_at = datetime.now(tz=pytz.UTC) + timedelta(days=1)
+    end_at = factory.LazyAttribute(lambda obj: obj.start_at + timedelta(hours=random.randrange(1, 10)))
+    seats = factory.LazyFunction(lambda: random.randrange(2, 10))
     city = factory.SubFactory(CityFactory)
 
     @factory.post_generation
