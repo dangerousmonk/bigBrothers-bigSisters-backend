@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from bbbs.common.serializers import TagSerializer
 
-from .models import Video, Movie
+from .models import Movie, Video
 
 
 class VideoSerializer(serializers.ModelSerializer):

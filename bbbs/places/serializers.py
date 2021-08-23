@@ -2,8 +2,8 @@ from rest_framework import serializers
 
 from bbbs.common.serializers import TagSerializer
 
-from .models import Place
 from .fields import InfoField
+from .models import Place
 
 
 class PlaceSerializer(serializers.ModelSerializer):

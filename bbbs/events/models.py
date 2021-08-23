@@ -42,15 +42,6 @@ class EventsQuerySet(models.QuerySet):
         qs = qs.with_taken_seats()
         return qs.filter(city=city, end_at__lt=now())
 
-    def with_not_finished_for_guest(self, city):
-        """
-        Return only events in query_params city that haven't ended
-        :param city: City instance
-        :return: Event queryset
-        """
-        qs = self.with_taken_seats()
-        return qs.filter(city=city, end_at__gt=now()) #TODO: events only for authorized
-
 
 class Event(models.Model):
     address = models.CharField(max_length=200, verbose_name=_('address'))

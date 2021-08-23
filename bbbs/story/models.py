@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 from bbbs.common.validators import year_validator
 
+
 class Story(models.Model):
     title = models.CharField(
         max_length=100,

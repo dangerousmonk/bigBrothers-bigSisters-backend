@@ -1,5 +1,6 @@
-from rest_framework import permissions
 from django.contrib.admin import ModelAdmin
+
+from rest_framework import permissions
 
 
 class IsOwnerAdminModeratorOrReadOnly(permissions.BasePermission):

@@ -9,7 +9,7 @@ from bbbs.places.views import PlaceViewSet
 from bbbs.questions.views import QuestionViewSet
 from bbbs.rights.views import RightViewSet
 from bbbs.story.views import StoryViewSet
-from bbbs.videos.views import VideoViewSet, MovieViewSet
+from bbbs.videos.views import MovieViewSet, VideoViewSet
 
 v1_router = DefaultRouter()
 v1_router.register(r'afisha/events', EventViewSet, basename='events')

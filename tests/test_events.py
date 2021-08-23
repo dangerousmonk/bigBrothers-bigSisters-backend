@@ -104,7 +104,7 @@ def test_events_extra_months_action_available(mentor, mentor_client):
 
 def test_archived_events_available(mentor, mentor_client):
     # not started events
-    factories.EventFactory.create_batch(PAGE_SIZE + 1,city=mentor.city)
+    factories.EventFactory.create_batch(PAGE_SIZE + 1, city=mentor.city)
 
     # event in the past
     factories.EventFactory.create(
@@ -126,4 +126,14 @@ def test_archived_events_available(mentor, mentor_client):
     assert type(data['results']) == list
     assert data['count'] == 1
     assert len(data['results']) == 1
+
+
+def test_events_for_user_only_in_his_city(mentor, mentor_client):
+    factories.EventFactory.create_batch(10)
+    factories.EventFactory.create_batch(PAGE_SIZE - 1, city=mentor.city)
+    url = reverse('events-list')
+    response = mentor_client.get(url)
+
+    assert response.status_code == 200
+    assert len(response.json()['results']) == PAGE_SIZE - 1
 

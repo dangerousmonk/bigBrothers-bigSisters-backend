@@ -2,8 +2,8 @@ from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from bbbs.common.validators import year_validator
 from bbbs.common.choices import DiaryMarkChoices
+from bbbs.common.validators import year_validator
 
 
 class Diary(models.Model):

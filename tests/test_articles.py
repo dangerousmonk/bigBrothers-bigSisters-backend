@@ -2,6 +2,7 @@ from django.conf import settings
 from django.urls import reverse
 
 import pytest
+
 from . import factories
 
 pytestmark = pytest.mark.django_db

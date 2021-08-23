@@ -18,8 +18,6 @@ class QuestionViewSet(ListRetrieveCreateUpdateMixin):
     serializer_class = QuestionSerializer
     permission_classes = [IsOwnerAdminModeratorOrReadOnly]
 
-    # filter_backends = [DjangoFilterBackend]
-
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 

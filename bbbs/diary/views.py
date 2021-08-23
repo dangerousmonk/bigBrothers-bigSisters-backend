@@ -38,7 +38,7 @@ class DiaryViewSet(viewsets.ModelViewSet):
 
         if not diary.sent_to_curator:
             to_email = author.curator.email
-            serializer = BaseEmailSerializer(data={'email': to_email})
+            serializer = EmailSerializer(data={'email': to_email})
             serializer.is_valid(raise_exception=True)
 
             author_name = author.get_full_name()

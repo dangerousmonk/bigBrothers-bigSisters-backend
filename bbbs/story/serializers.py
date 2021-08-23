@@ -1,8 +1,8 @@
 from rest_framework import serializers
 
-from .models import Story
-
 from bbbs.users.serializers import AuthorSerializer
+
+from .models import Story
 
 
 class StorySerializer(serializers.ModelSerializer):

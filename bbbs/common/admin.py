@@ -1,7 +1,7 @@
 from django.contrib.admin import ModelAdmin, register
 from django.utils.translation import gettext_lazy as _
 
-from .models import City, Tag, Region
+from .models import City, Region, Tag
 
 
 @register(City)

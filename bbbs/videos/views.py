@@ -7,8 +7,8 @@ from bbbs.common.models import Tag
 from bbbs.common.serializers import TagSerializer
 
 from .filters import VideoFilter
-from .models import Video, Movie
-from .serializers import VideoSerializer, MovieSerializer
+from .models import Movie, Video
+from .serializers import MovieSerializer, VideoSerializer
 
 
 class VideoViewSet(ReadOnlyModelViewSet):
